@@ -1,0 +1,115 @@
+<div class="outer">
+  <mat-card class="example-card" appearance="outlined">
+    <mat-card-header>
+      <mat-card-title-group>
+        <mat-card-title>Enter new expense</mat-card-title>
+        <mat-card-subtitle>All fields are required</mat-card-subtitle>
+      </mat-card-title-group>
+    </mat-card-header>
+    <mat-card-content class="my-5">
+      <form [formGroup]="signUpForm" (ngSubmit)="submit()">
+        <div class="d-flex justify-content-between gap-3">
+          <div class="form-div">
+            <mat-form-field appearance="outline">
+              <mat-label>Expense Name</mat-label>
+              <input type="text" matInput formControlName="expenseName" />
+              @if (signUpForm.controls['expenseName'].hasError('required') &&
+              signUpForm.controls['expenseName'].touched) {
+              <mat-error>Expense name is required</mat-error>
+              } @else if (signUpForm.controls['expenseName'].hasError('minlength')) {
+              <mat-error>Minimum 3 characters required</mat-error>
+              } @else if (signUpForm.controls['expenseName'].hasError('maxlength')) {
+              <mat-error>Maximum 50 characters allowed</mat-error>
+              }
+            </mat-form-field>
+          </div>
+          <div class="form-div">
+            <mat-form-field appearance="outline">
+              <mat-label>Amount Spent</mat-label>
+              <input type="number" min="0" matInput formControlName="expenseAmount" />
+              @if (signUpForm.controls['expenseAmount'].hasError('required') &&
+              signUpForm.controls['expenseAmount'].touched) {
+              <mat-error>Amount is required</mat-error>
+              } @else if (signUpForm.controls['expenseAmount'].hasError('min')) {
+              <mat-error>Amount must be greater than 0</mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="d-flex justify-content-between gap-3">
+          <div class="form-div">
+            <mat-form-field appearance="outline">
+              <mat-label>Date</mat-label>
+              <input
+                matInput
+                [matDatepicker]="picker"
+                formControlName="date"
+                [min]="minDate"
+                [max]="maxDate"
+              />
+              <mat-hint>MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              @if (signUpForm.controls['date'].hasError('required') &&
+              signUpForm.controls['date'].touched) {
+              <mat-error>Date is required</mat-error>
+              }
+            </mat-form-field>
+          </div>
+          <div class="form-div">
+            <mat-form-field appearance="outline">
+              <mat-label>Expense Category</mat-label>
+              <mat-select formControlName="expenseCategory">
+                <mat-option>None</mat-option>
+                <mat-option value="option1">Option 1</mat-option>
+                <mat-option value="option2">Option 2</mat-option>
+                <mat-option value="option3">Option 3</mat-option>
+              </mat-select>
+              @if (signUpForm.controls['expenseCategory'].hasError('required') &&
+              signUpForm.controls['expenseCategory'].touched) {
+              <mat-error>Category is required</mat-error>
+              }</mat-form-field
+            >
+          </div>
+        </div>
+        <div class="d-flex justify-content-between gap-3">
+          <div class="form-div">
+            <mat-form-field appearance="outline">
+              <mat-label>Expense Payment Type</mat-label>
+              <mat-select formControlName="paymentType">
+                <mat-option>None</mat-option>
+                <mat-option value="cash">Cash</mat-option>
+                <mat-option value="upi">Upi</mat-option>
+                <mat-option value="card">Card</mat-option>
+              </mat-select>
+              @if (signUpForm.controls['paymentType'].hasError('required') &&
+              signUpForm.controls['paymentType'].touched) {
+              <mat-error>Payment type is required</mat-error>
+              }
+            </mat-form-field>
+          </div>
+          <div class="text-end" (click)="openDialog()">Add new Category</div>
+        </div>
+        <div class="">
+          <div class="w-100">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Expense Payment Type</mat-label>
+              <textarea type="text" matInput formControlName="comment"></textarea>
+
+              @if (signUpForm.controls['comment'].hasError('maxlength')) {
+              <mat-error>Maximum 200 characters allowed</mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </div>
+        @if (err) {
+        <mat-error class="text-center mb-3">All fields are required</mat-error>
+        }
+        <div class="button d-flex gap-3 justify-content-end">
+          <button type="reset" matButton="outlined">Reset</button>
+          <button type="submit" matButton="outlined" [routerLink]="'/login'">Save</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

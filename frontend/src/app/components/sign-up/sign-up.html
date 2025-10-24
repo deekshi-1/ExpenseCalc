@@ -1,0 +1,64 @@
+<div class="outerDiv d-flex justify-content-center">
+  <mat-card class="p-5 shadow-lg box">
+    <mat-card-title class="my-4">SignUp</mat-card-title>
+    <mat-card-content>
+      <form [formGroup]="signUpForm" (ngSubmit)="submit()">
+        <div>
+          <mat-form-field appearance="outline">
+            <mat-label>Name</mat-label>
+            <input type="text" matInput formControlName="firstName" />
+            @if (signUpForm.controls['firstName'].hasError('required') &&
+            signUpForm.controls['firstName'].touched) {
+            <mat-error>Field Required</mat-error>
+            }
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input type="text" matInput formControlName="email" />
+            @if (signUpForm.controls['email'].hasError('required') &&
+            signUpForm.controls['email'].touched) {
+            <mat-error>Field Required</mat-error>
+            } @else if (signUpForm.controls['email'].hasError('email') &&
+            signUpForm.controls['email'].touched) {
+            <mat-error>Must be email</mat-error>
+            }
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="outline">
+            <mat-label>Password</mat-label>
+            <input type="password" matInput formControlName="password" /> @if
+            (signUpForm.controls['password'].hasError('required') &&
+            signUpForm.controls['password'].touched) {
+            <mat-error>Field Required</mat-error>
+            } @else if (signUpForm.controls['password'].hasError('minlength') &&
+            signUpForm.controls['password'].touched) {
+            <mat-error>Must be at lest 6 characters</mat-error>
+            }</mat-form-field
+          >
+        </div>
+        <div>
+          <mat-form-field appearance="outline">
+            <mat-label>Confirm Password</mat-label>
+            <input type="password" matInput formControlName="confirmPassword" />
+            @if(signUpForm.get('confirmPassword')?.hasError('required') &&
+            signUpForm.get('confirmPassword')?.touched){
+            <mat-error class="error">Password Required</mat-error>
+            }@else if(signUpForm.hasError('passwordMissMatch') &&
+            signUpForm.get('confirmPassword')?.touched){
+            <mat-error class="error">Password Mismatch</mat-error>}
+          </mat-form-field>
+        </div>  
+        @if (err) {
+        <mat-error class="text-center mb-3">All fields are required</mat-error>
+        }
+        <div class="button d-flex gap-3 justify-content-center">
+          <button type="submit" matButton="outlined">SignUp</button>
+          <button type="submit" matButton="outlined" [routerLink]="'/login'">Login</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

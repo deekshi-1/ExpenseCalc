@@ -1,0 +1,38 @@
+<div class="main">
+  <div class="top text-center p-3 fs-2 fw-bold">Profile</div>
+  <div class="content mt-5 mb-4">
+    <div class="icon"><mat-icon>person_2</mat-icon></div>
+  </div>
+  <p class="d-flex justify-content-center align-items-center" (click)="toggleEdit()">
+    edit.<mat-icon>edit</mat-icon>
+  </p>
+  <div class="details my-3 d-flex justify-content-around">
+    <mat-form-field appearance="outline">
+      <mat-label>Expense Name</mat-label>
+      <input
+        type="text"
+        matInput
+        [(ngModel)]="name"
+        class=""
+        [readonly]="!isEditing"
+      /> </mat-form-field
+    ><mat-form-field appearance="outline">
+      <mat-label>Expense Name</mat-label>
+      <input type="text" matInput [(ngModel)]="userName" class="" [readonly]="!isEditing" />
+    </mat-form-field>
+  </div>
+  <div class="info d-flex justify-content-around gap-3">
+    <div class="item">
+      <p>Registered In</p>
+      <p>DSADASD</p>
+    </div>
+    <div class="item">
+      <p>No of Entries</p>
+      <p>dasd</p>
+    </div>
+    <div class="item">
+      <p>Last entry</p>
+      <p>asdasd</p>
+    </div>
+  </div>
+</div>

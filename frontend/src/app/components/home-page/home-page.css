@@ -1,0 +1,13 @@
+.nav{
+    height: 70px;
+    position: relative;
+}
+
+.nav-bar{
+    position: absolute;
+    width: 100%;
+}
+
+.display{
+    padding: 5px 10px;
+}

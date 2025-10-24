@@ -1,0 +1,19 @@
+.sidenav-container {
+  height: 100vh;
+  background: transparent;
+}
+
+.sidenav {
+  width: 250px;
+}
+
+mat-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+mat-nav-list{
+  position: relative;
+  z-index: 5;
+}

@@ -1,0 +1,23 @@
+.main {
+  width: 500px;
+}
+
+.top {
+  background-color: rgb(157, 157, 223);
+}
+
+mat-icon {
+}
+
+.icon {
+  margin: auto;
+  transform: scale(2);
+  width: fit-content;
+  padding: 5px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.info{
+    text-align: center;
+}

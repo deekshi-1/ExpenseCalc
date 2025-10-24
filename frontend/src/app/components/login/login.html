@@ -1,0 +1,46 @@
+<div class="outerDiv">
+  <mat-card class="p-5 shadow-lg">
+    <mat-card-title class="my-3">Login</mat-card-title>
+    <mat-card-content class="px-5">
+      <form [formGroup]="loginForm" (ngSubmit)="submit()">
+        <div class="mb-3">
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input type="text" matInput formControlName="email" />
+            @if (loginForm.controls['email'].hasError('required') &&
+            loginForm.controls['email'].touched) {
+            <mat-error>Field Required</mat-error>
+            } @else if (loginForm.controls['email'].hasError('email') &&
+            loginForm.controls['email'].touched) {
+            <mat-error>Must be email</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="mb-3">
+          <mat-form-field appearance="outline">
+            <mat-label>Password</mat-label>
+            <input type="password" matInput formControlName="password" />@if
+            (loginForm.controls['password'].hasError('required') &&
+            loginForm.controls['password'].touched) {
+            <mat-error>Field Required</mat-error>
+            } @else if (loginForm.controls['password'].hasError('minlength') &&
+            loginForm.controls['password'].touched) {
+            <mat-error>Must be at lest 6 characters</mat-error>
+            }
+          </mat-form-field>
+          @if (err) {
+          <mat-error>Invalid credentials</mat-error>
+          }
+        </div>
+
+        <p class="text-center mb-2">
+          Dont have an account? <a class="text-primary" routerLink="/signup">signup</a>
+        </p>
+        <div class="d-flex justify-content-center">
+          <button type="submit" matButton="outlined">Login</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

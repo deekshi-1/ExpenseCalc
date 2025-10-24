@@ -1,0 +1,23 @@
+.outerDiv {
+  padding: 10vh 10px 0px;
+}
+.mat-form-field {
+  width: 100%;
+}
+
+mat-card-title,
+mat-card-content {
+  display: flex;
+  justify-content: center;
+}
+mat-form-field {
+  margin-bottom: 10px;
+}
+.box {
+  width: fit-content;
+  min-width: 400px;
+}
+
+.valid-input {
+  border-color: green;
+}
