@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card'
 import { Router, RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
+import { UserService } from '../../services/user-service';
 @Component({
   selector: 'app-signup',
   imports: [ReactiveFormsModule, MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule, RouterLink],
@@ -15,62 +16,47 @@ import { firstValueFrom } from 'rxjs';
 export class Signup {
   err: boolean = false;
   signUpForm: FormGroup = new FormGroup({
-    firstName: new FormControl('', [Validators.required, Validators.minLength(2)]),
-    lastName: new FormControl('', [Validators.required, Validators.minLength(2)]),
+    name: new FormControl('', [Validators.required, Validators.minLength(2)]),
     email: new FormControl('', [Validators.required, Validators.email]),
-    phone: new FormControl('', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]),
     password: new FormControl('', [
       Validators.required,
       Validators.minLength(6)]),
     confirmPassword: new FormControl('', Validators.required),
-  }, { validators: this.checkPassword(), });
+  }, { validators: this.checkPassword() });
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private userService: UserService) { }
 
   async submit() {
-    // if (this.signUpForm.valid) {
-    //   try {
-    //     const email = this.signUpForm.get('email')?.value;
+    this.err = false;
+    if (this.signUpForm.valid) {
+      try {
+        const data = {
+          name: this.signUpForm.get('name')?.value,
+          email: this.signUpForm.get('email')?.value,
+          password: this.signUpForm.get('password')?.value,
+        };
 
-    //     const user = await firstValueFrom(this.userService.checkUser(email));
+        let respnse = await firstValueFrom(this.userService.signup(data));
+        console.log(respnse);
 
-    //     if (true) {
-    //       alert("Account already exists");
-    //       return;
-    //     }
 
-    //     const accNo = await this.geneAccNo();
-
-    //     const data = {
-    //       firstName: this.signUpForm.get('firstName')?.value,
-    //       lastName: this.signUpForm.get('lastName')?.value,
-    //       email: this.signUpForm.get('email')?.value,
-    //       phone: this.signUpForm.get('phone')?.value,
-    //       password: this.signUpForm.get('password')?.value,
-    //       accNo: accNo,
-    //       balance: 0
-    //     };
-
-    //     await firstValueFrom(dd);
-    //     alert('Registration successful');
-    //     this.router.navigate(['login']);
-
-    //   } catch (error) {
-    //     console.error('Error during registration:', error);
-    //     alert('Something went wrong during registration');
-    //   }
-    // } else {
-    //   this.err = true;
-    // }
+      } catch (error: unknown) {
+        console.log((error as any).error);
+        alert((error as any).error.message || 'Unknown error');
+      }
+    } else {
+      this.err = true;
+    }
   }
   checkPassword(): ValidatorFn {
     return (group: AbstractControl): ValidationErrors | null => {
       const password = group.get('password')?.value;
       const confirmPassword = group.get('confirmPassword')?.value;
-
       if (!password || !confirmPassword) return null;
+      const mismatch = password !== confirmPassword ? { passwordMissMatch: true } : null;
+      group.get('confirmPassword')?.setErrors(mismatch);
 
-      return password === confirmPassword ? null : { passwordMissMatch: true };
+      return mismatch;
     };
   }
 

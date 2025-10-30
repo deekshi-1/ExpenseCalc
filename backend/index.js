@@ -4,6 +4,7 @@ const cors = require("cors");
 const router = require("./routes/main.route");
 const db = require("./config/connectDb");
 const cookieParser = require("cookie-parser");
+const errHandler = require("./middleware/errorMiddleware");
 
 dotenv.config();
 
@@ -20,6 +21,9 @@ app.use(cookieParser());
 db();
 
 app.use("/", router);
+
+app.use(errHandler);
+
 
 const PORT = process.env.PORT || 2000;
 

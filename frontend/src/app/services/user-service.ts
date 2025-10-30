@@ -12,8 +12,12 @@ export class UserService {
 
   login(data: any) {
     console.log(this.api);
-
     return this.http.post<any[]>(this.api + 'auth/login', data, { withCredentials: true })
+  }
+
+  signup(data: any) {
+    console.log(data);
+    return this.http.post<any>(this.api + 'auth/signup', data, { withCredentials: true })
   }
 
 }

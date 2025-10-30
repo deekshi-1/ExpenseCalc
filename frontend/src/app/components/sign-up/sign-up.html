@@ -6,9 +6,9 @@
         <div>
           <mat-form-field appearance="outline">
             <mat-label>Name</mat-label>
-            <input type="text" matInput formControlName="firstName" />
-            @if (signUpForm.controls['firstName'].hasError('required') &&
-            signUpForm.controls['firstName'].touched) {
+            <input type="text" matInput formControlName="name" />
+            @if (signUpForm.controls['name'].hasError('required') &&
+            signUpForm.controls['name'].touched) {
             <mat-error>Field Required</mat-error>
             }
           </mat-form-field>
@@ -47,7 +47,7 @@
             signUpForm.get('confirmPassword')?.touched){
             <mat-error class="error">Password Required</mat-error>
             }@else if(signUpForm.hasError('passwordMissMatch') &&
-            signUpForm.get('confirmPassword')?.touched){
+            signUpForm.get('confirmPassword')?.dirty){
             <mat-error class="error">Password Mismatch</mat-error>}
           </mat-form-field>
         </div>  
@@ -56,6 +56,7 @@
         }
         <div class="button d-flex gap-3 justify-content-center">
           <button type="submit" matButton="outlined">SignUp</button>
+          <button type="reset" matButton="outlined">S=</button>
           <button type="submit" matButton="outlined" [routerLink]="'/login'">Login</button>
         </div>
       </form>

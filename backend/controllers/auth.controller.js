@@ -29,12 +29,14 @@ checkLogin = async (req, res) => {
   }
 };
 
-signUpUser = async (req, res) => {
+signUpUser = async (req, res, next) => {
   const { name, email, password } = req.body;
+  console.log(req.body)
   const userExists = await User.findOne({ email });
   if (userExists) {
+    const error = new Error("User already exists");
     res.status(400);
-    throw new Error("User already exists");
+    return next(error)
   }
 
   const user = await User.create({ name, email, password });
@@ -47,8 +49,9 @@ signUpUser = async (req, res) => {
       token: generateToken(user._id),
     });
   } else {
+    const error = new Error("Invalid user data");
     res.status(400);
-    throw new Error("Invalid user data");
+    return next(error)
   }
 };
 
