@@ -1,12 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const authController = require("../controllers/auth.controller");
+const userController = require("../controllers/user.controller");
+const auth = require('../middleware/authMiddleware')
 
 router.get("/", (req, res) => {
   res.send("User Routes workes");
 });
 
-router.route("/signup").post(authController.signUpUser);
-router.route("/login").post(authController.checkLogin);
+
+router.route("/getData").get(auth, userController.getUserDetails);
+router.route("/upDate").patch(auth, userController.updateUserDetails);
 
 module.exports = router;

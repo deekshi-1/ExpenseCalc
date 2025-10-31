@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { Router, RouterLink } from '@angular/router';
 import { UserService } from '../../services/user-service';
+import { firstValueFrom } from 'rxjs';
 
 
 
@@ -26,25 +27,21 @@ export class Login {
   });
   constructor(private router: Router, private userService: UserService) { }
 
-  submit() {
+  async submit() {
     const data = {
       email: this.loginForm.get('email')?.value,
       password: this.loginForm.get('password')?.value
     };
-    console.log(data);
-    
 
-    this.userService.login(data).subscribe({
-      next: (item) => {
-        if (item) {
-         console.log(item);
-         
-        }
-      }, error: (error) => {
-        console.log("erroe");
-        
-        this.err = true;
+    try {
+      let response = await firstValueFrom(this.userService.login(data))
+      if (response.status == 200) {
+        this.router.navigateByUrl('/')
       }
-    });
+    } catch (error) {
+      console.log((error as any).error);
+      this.err = true;
+    }
+
   }
 }

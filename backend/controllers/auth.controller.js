@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
 
+
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: "10d",
@@ -18,7 +19,7 @@ checkLogin = async (req, res) => {
       maxAge: 10 * 24 * 60 * 60 * 1000,
       sameSite: "strict",
     });
-    res.json({
+    res.status(200).json({
       _id: user._id,
       name: user.name,
       email: user.email,
@@ -35,7 +36,7 @@ signUpUser = async (req, res, next) => {
   const userExists = await User.findOne({ email });
   if (userExists) {
     const error = new Error("User already exists");
-    res.status(400);
+    res.status(409);
     return next(error)
   }
 
@@ -46,7 +47,6 @@ signUpUser = async (req, res, next) => {
       _id: user._id,
       name: user.name,
       email: user.email,
-      token: generateToken(user._id),
     });
   } else {
     const error = new Error("Invalid user data");

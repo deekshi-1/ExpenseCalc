@@ -11,13 +11,19 @@ export class UserService {
   api = environment.apiUserUrl;
 
   login(data: any) {
-    console.log(this.api);
-    return this.http.post<any[]>(this.api + 'auth/login', data, { withCredentials: true })
+    return this.http.post<any[]>(this.api + 'auth/login', data, { withCredentials: true, observe: 'response' })
   }
 
   signup(data: any) {
-    console.log(data);
-    return this.http.post<any>(this.api + 'auth/signup', data, { withCredentials: true })
+    return this.http.post<any>(this.api + 'auth/signup', data, { observe: 'response' })
+  }
+
+  getData() {
+    return this.http.get<any>(this.api + 'user/getData', { withCredentials: true, observe: 'response' })
+  }
+
+  updateUser(data: any) {
+    return this.http.patch<any>(this.api + 'user/upDate', DataTransfer, { withCredentials: true, observe: 'response' })
   }
 
 }

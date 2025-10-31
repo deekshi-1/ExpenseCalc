@@ -36,13 +36,19 @@ export class Signup {
           password: this.signUpForm.get('password')?.value,
         };
 
-        let respnse = await firstValueFrom(this.userService.signup(data));
-        console.log(respnse);
-
+        let response = await firstValueFrom(this.userService.signup(data));
+        console.log(response.status);
+        if (response.status == 201) {
+          alert('User created ');
+          this.router.navigateByUrl('/login');
+        }
 
       } catch (error: unknown) {
         console.log((error as any).error);
         alert((error as any).error.message || 'Unknown error');
+        if ((error as any).status == 409) {
+          this.router.navigateByUrl('/login');
+        }
       }
     } else {
       this.err = true;

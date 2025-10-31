@@ -4,27 +4,25 @@
     <div class="icon"><mat-icon>person_2</mat-icon></div>
   </div>
   <p class="d-flex justify-content-center align-items-center" (click)="toggleEdit()">
-    edit.<mat-icon>edit</mat-icon>
+    Edit.<mat-icon>edit</mat-icon>
   </p>
+  @if(isEditing){
+  <div class="d-flex justify-content-center"><button  matButton="outlined" (click)="update()">Update</button></div>
+  }
   <div class="details my-3 d-flex justify-content-around">
     <mat-form-field appearance="outline">
       <mat-label>Expense Name</mat-label>
-      <input
-        type="text"
-        matInput
-        [(ngModel)]="name"
-        class=""
-        [readonly]="!isEditing"
-      /> </mat-form-field
-    ><mat-form-field appearance="outline">
+      <input type="text" matInput [(ngModel)]="name" class="" [readonly]="!isEditing" />
+    </mat-form-field><mat-form-field appearance="outline">
       <mat-label>Expense Name</mat-label>
-      <input type="text" matInput [(ngModel)]="userName" class="" [readonly]="!isEditing" />
+      <input type="text" matInput [(ngModel)]="email" class="" [readonly]="!isEditing" />
     </mat-form-field>
   </div>
+
   <div class="info d-flex justify-content-around gap-3">
     <div class="item">
       <p>Registered In</p>
-      <p>DSADASD</p>
+      <p>{{created() | date:'dd MMM yy'}}</p>
     </div>
     <div class="item">
       <p>No of Entries</p>
