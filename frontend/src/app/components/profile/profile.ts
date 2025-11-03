@@ -12,12 +12,13 @@ import { DatePipe } from '@angular/common';
   selector: 'app-profile',
   imports: [MatIcon, MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, DatePipe],
   templateUrl: './profile.html',
-  styleUrl: './profile.css'
+  styleUrl: './profile.css',
 })
 export class Profile {
   name = signal('');
-  created = signal(new Date())
+  created = signal(new Date());
   userName = signal('');
+  user = signal<any>({});
   isEditing = false;
   toggleEdit() {
     this.isEditing = !this.isEditing;
@@ -27,39 +28,46 @@ export class Profile {
     this.getData();
   }
 
-
   getData = async () => {
-    let response = await firstValueFrom(this.userService.getData())
+    let response = await firstValueFrom(this.userService.getData());
     console.log(response);
-    this.userName.set(response.body.name)
+    this.userName.set(response.body.name);
+    this.user.set(response.body);
+    console.log(this.user());
 
     if (response.status == 200 && response.body) {
-      this.userName.set(response.body.name)
-      this.name.set(response.body.name)
+      this.userName.set(response.body.name);
+      this.name.set(response.body.name);
       this.created.set(new Date(response.body.createdAt));
     }
-  }
-
+  };
 
   async update() {
     if (this.userName().trim() === this.name().trim()) {
-      alert("No change")
-    }
-    else {
+      alert('No change');
+    } else {
       try {
-        let response = await firstValueFrom(this.userService.updateUser({
-          name: this.name().trim()
-        }))
+        let response = await firstValueFrom(
+          this.userService.updateUser({
+            name: this.name().trim(),
+          })
+        );
         if (response.status === 200) {
-          alert("Success")
+          alert('Success');
           this.getData();
-          this.isEditing = false
+          this.isEditing = false;
         }
       } catch (error) {
-        alert("failed")
+        alert('failed');
       }
     }
-
   }
 
+  get createdDate() {
+    const dateStr = this.user()?.createdAt;
+    if (!dateStr) return null;
+
+    const date = new Date(dateStr);
+    return isNaN(date.getTime()) ? null : date;
+  }
 }

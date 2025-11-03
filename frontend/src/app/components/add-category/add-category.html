@@ -1,20 +1,20 @@
 <div class="main">
   <mat-form-field appearance="outline">
     <mat-label>Category Name</mat-label>
-    <input
-      type="text"
-      matInput
-      [(ngModel)]="newCategory"
-      (input)="checkCategory()"
-    />
+    <input type="text" matInput [(ngModel)]="newCategory" (input)="checkCategory()" />
   </mat-form-field>
   @if (err()) {
-    <mat-error class="text-center">Already exists</mat-error>
+  <mat-error class="text-center">Already exists</mat-error>
   }
-
+  <div class="catogoryList row gap-3 justify-content-center">
+    @for (item of category(); track item._id) {
+    <mat-card appearance="outlined" color="primary" class="chips"
+      ><span class="d-flex align-items-center p-2"
+        >{{ item.name }} <mat-icon class="mx-2" (click)="deleteItem(item._id)">delete</mat-icon></span
+      ></mat-card
+    >}
+  </div>
   <div class="d-flex justify-content-center mt-4">
-    <button mat-stroked-button color="primary" (click)="addCategory()">
-      Add Category
-    </button>
+    <button mat-stroked-button color="primary" (click)="addCategory()">Add Category</button>
   </div>
 </div>

@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const User = require("./User");
 
 const expenseSchema = mongoose.Schema(
   {
@@ -29,6 +30,18 @@ const expenseSchema = mongoose.Schema(
     timestamps: true,
   }
 );
+
+expenseSchema.post("save", async function (doc, next) {
+  try {
+    await User.findByIdAndUpdate(doc.user, {
+      $set: { lastExpenseDate: doc.date },
+      $inc: { expenseCount: 1 },
+    });
+    next();
+  } catch (err) {
+    next(err);
+  }
+})
 
 const Expense = mongoose.model("Expense", expenseSchema);
 module.exports = Expense;

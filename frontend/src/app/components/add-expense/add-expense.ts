@@ -14,78 +14,78 @@ import { AddCategory } from '../add-category/add-category';
 import { CategoryService } from '../../services/category/category-service';
 import { firstValueFrom } from 'rxjs';
 
-
 @Component({
   selector: 'app-add-expense',
-  imports: [MatIconModule, MatCardModule, MatButtonModule, MatSelectModule, MatDatepickerModule, MatDialogModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, RouterLink],
-  templateUrl: './add-expense.html', providers: [provideNativeDateAdapter()],
-  styleUrl: './add-expense.css'
+  imports: [
+    MatIconModule,
+    MatCardModule,
+    MatButtonModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatDialogModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    RouterLink,
+  ],
+  templateUrl: './add-expense.html',
+  providers: [provideNativeDateAdapter()],
+  styleUrl: './add-expense.css',
 })
 export class AddExpense {
   err: boolean = false;
-  category = signal<Category[]>([])
+  category = signal<Category[]>([]);
 
   private readonly _currentYear = new Date();
   readonly minDate = new Date(this._currentYear.getFullYear() - 2, 0, 1);
-  readonly maxDate = new Date(this._currentYear.getFullYear(),
+  readonly maxDate = new Date(
+    this._currentYear.getFullYear(),
     this._currentYear.getMonth() + 3,
-    this._currentYear.getDate());
-
+    this._currentYear.getDate()
+  );
 
   signUpForm: FormGroup = new FormGroup({
     expenseName: new FormControl('', [
       Validators.required,
       Validators.minLength(3),
-      Validators.maxLength(50)
+      Validators.maxLength(50),
     ]),
-    expenseAmount: new FormControl('', [
-      Validators.required,
-      Validators.min(1)
-    ]),
-    expenseCategory: new FormControl('', [
-      Validators.required
-    ]),
-    paymentType: new FormControl('cash', [
-      Validators.required
-    ]),
-    date: new FormControl('', [
-      Validators.required
-    ]),
-    comment: new FormControl('', [
-      Validators.maxLength(200)
-    ])
+    expenseAmount: new FormControl('', [Validators.required, Validators.min(1)]),
+    expenseCategory: new FormControl('', [Validators.required]),
+    paymentType: new FormControl('cash', [Validators.required]),
+    date: new FormControl('', [Validators.required]),
+    comment: new FormControl('', [Validators.maxLength(200)]),
   });
 
-  constructor(private router: Router, private dialog: MatDialog, private catagoryService: CategoryService) {
+  constructor(
+    private router: Router,
+    private dialog: MatDialog,
+    private catagoryService: CategoryService
+  ) {
     this.getCategory();
   }
 
   openDialog() {
-    const dialogRef = this.dialog.open(AddCategory, { autoFocus: false });
-    dialogRef.afterClosed().subscribe(result => {
+    const dialogRef = this.dialog.open(AddCategory, { autoFocus: false, width: '50vw' });
+    dialogRef.afterClosed().subscribe((result) => {
       console.log(`Dialog result: ${result}`);
     });
   }
   async getCategory() {
-    let response = await firstValueFrom(this.catagoryService.getCategory())
+    let response = await firstValueFrom(this.catagoryService.getCategory());
     this.category.set(response.body ?? []);
   }
-
 
   async submit() {
     // if (this.signUpForm.valid) {
     //   try {
     //     const email = this.signUpForm.get('email')?.value;
-
     //     const user = await firstValueFrom(this.userService.checkUser(email));
-
     //     if (true) {
     //       alert("Account already exists");
     //       return;
     //     }
-
     //     const accNo = await this.geneAccNo();
-
     //     const data = {
     //       firstName: this.signUpForm.get('firstName')?.value,
     //       lastName: this.signUpForm.get('lastName')?.value,
@@ -95,11 +95,9 @@ export class AddExpense {
     //       accNo: accNo,
     //       balance: 0
     //     };
-
     //     await firstValueFrom(dd);
     //     alert('Registration successful');
     //     this.router.navigate(['login']);
-
     //   } catch (error) {
     //     console.error('Error during registration:', error);
     //     alert('Something went wrong during registration');

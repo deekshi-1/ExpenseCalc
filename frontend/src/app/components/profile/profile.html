@@ -7,11 +7,13 @@
     Edit.<mat-icon>edit</mat-icon>
   </p>
   @if(isEditing){
-  <div class="d-flex justify-content-center"><button  matButton="outlined" (click)="update()">Update</button></div>
+  <div class="d-flex justify-content-center">
+    <button matButton="outlined" (click)="update()">Update</button>
+  </div>
   }
   <div class="details my-3 d-flex justify-content-around">
     <mat-form-field appearance="outline">
-      <mat-label>Expense Name</mat-label>
+      <mat-label>User Name</mat-label>
       <input type="text" matInput [(ngModel)]="name" class="" [readonly]="!isEditing" />
     </mat-form-field>
   </div>
@@ -19,15 +21,15 @@
   <div class="info d-flex justify-content-around gap-3">
     <div class="item">
       <p>Registered In</p>
-      <p>{{created() | date:'dd MMM yy'}}</p>
+      <p>{{ createdDate ? (createdDate | date : 'dd MMM yy') : 'N/A' }}</p>
     </div>
     <div class="item">
       <p>No of Entries</p>
-      <p>dasd</p>
+      <p>{{ user().expense }}</p>
     </div>
     <div class="item">
       <p>Last entry</p>
-      <p>asdasd</p>
+      <p>{{user().expense === 0? `No entries`:user().lastExpenseDate}}</p>
     </div>
   </div>
 </div>

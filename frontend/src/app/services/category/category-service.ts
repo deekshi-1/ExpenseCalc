@@ -14,6 +14,9 @@ export class CategoryService {
   }
 
   addCategory(data: any) {
-    return this.http.post<any[]>(this.api + 'category/addCategory', data, { withCredentials: true, observe: 'response' })
+    return this.http.post<any>(this.api + 'category/addCategory', data, { withCredentials: true, observe: 'response' })
+  }
+  removeId(id:any){
+     return this.http.delete<any>(`${this.api}category/removeCategory/${id}`, { withCredentials: true, observe: 'response' })
   }
 }
