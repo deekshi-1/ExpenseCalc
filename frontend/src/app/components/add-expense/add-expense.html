@@ -7,18 +7,18 @@
       </mat-card-title-group>
     </mat-card-header>
     <mat-card-content class="my-5">
-      <form [formGroup]="signUpForm" (ngSubmit)="submit()">
-        <div class="d-flex justify-content-between gap-3">
+      <form [formGroup]="expenseForm" (ngSubmit)="submit()">
+        <div class="d-flex justify-content-between gap-3 mb-1">
           <div class="form-div">
             <mat-form-field appearance="outline">
               <mat-label>Expense Name</mat-label>
               <input type="text" matInput formControlName="expenseName" />
-              @if (signUpForm.controls['expenseName'].hasError('required') &&
-              signUpForm.controls['expenseName'].touched) {
+              @if (expenseForm.controls['expenseName'].hasError('required') &&
+              expenseForm.controls['expenseName'].touched) {
               <mat-error>Expense name is required</mat-error>
-              } @else if (signUpForm.controls['expenseName'].hasError('minlength')) {
+              } @else if (expenseForm.controls['expenseName'].hasError('minlength')) {
               <mat-error>Minimum 3 characters required</mat-error>
-              } @else if (signUpForm.controls['expenseName'].hasError('maxlength')) {
+              } @else if (expenseForm.controls['expenseName'].hasError('maxlength')) {
               <mat-error>Maximum 50 characters allowed</mat-error>
               }
             </mat-form-field>
@@ -27,25 +27,31 @@
             <mat-form-field appearance="outline">
               <mat-label>Amount Spent</mat-label>
               <input type="number" min="0" matInput formControlName="expenseAmount" />
-              @if (signUpForm.controls['expenseAmount'].hasError('required') &&
-              signUpForm.controls['expenseAmount'].touched) {
+              @if (expenseForm.controls['expenseAmount'].hasError('required') &&
+              expenseForm.controls['expenseAmount'].touched) {
               <mat-error>Amount is required</mat-error>
-              } @else if (signUpForm.controls['expenseAmount'].hasError('min')) {
+              } @else if (expenseForm.controls['expenseAmount'].hasError('min')) {
               <mat-error>Amount must be greater than 0</mat-error>
               }
             </mat-form-field>
           </div>
         </div>
-        <div class="d-flex justify-content-between gap-3">
+        <div class="d-flex justify-content-between gap-3 mb-1">
           <div class="form-div">
             <mat-form-field appearance="outline">
               <mat-label>Date</mat-label>
-              <input matInput [matDatepicker]="picker" formControlName="date" [min]="minDate" [max]="maxDate" />
+              <input
+                matInput
+                [matDatepicker]="picker"
+                formControlName="date"
+                [min]="minDate"
+                [max]="maxDate"
+              />
               <mat-hint>MM/DD/YYYY</mat-hint>
               <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
-              @if (signUpForm.controls['date'].hasError('required') &&
-              signUpForm.controls['date'].touched) {
+              @if (expenseForm.controls['date'].hasError('required') &&
+              expenseForm.controls['date'].touched) {
               <mat-error>Date is required</mat-error>
               }
             </mat-form-field>
@@ -54,15 +60,19 @@
             <mat-form-field appearance="outline">
               <mat-label>Expense Category</mat-label>
               <mat-select formControlName="expenseCategory">
-                @for (item of category(); track item._id) {<mat-option value="{{item.name}}">{{item.name}}</mat-option>}
+                @for (item of category(); track item._id) {<mat-option value="{{ item.name }}">{{
+                  item.name
+                }}</mat-option
+                >}
               </mat-select>
-              @if (signUpForm.controls['expenseCategory'].hasError('required') &&
-              signUpForm.controls['expenseCategory'].touched) {
+              @if (expenseForm.controls['expenseCategory'].hasError('required') &&
+              expenseForm.controls['expenseCategory'].touched) {
               <mat-error>Category is required</mat-error>
-              }</mat-form-field>
+              }</mat-form-field
+            >
           </div>
         </div>
-        <div class="d-flex justify-content-between gap-3">
+        <div class="d-flex justify-content-between gap-3 mb-1">
           <div class="form-div">
             <mat-form-field appearance="outline">
               <mat-label>Expense Payment Type</mat-label>
@@ -71,8 +81,8 @@
                 <mat-option value="upi">Upi</mat-option>
                 <mat-option value="card">Card</mat-option>
               </mat-select>
-              @if (signUpForm.controls['paymentType'].hasError('required') &&
-              signUpForm.controls['paymentType'].touched) {
+              @if (expenseForm.controls['paymentType'].hasError('required') &&
+              expenseForm.controls['paymentType'].touched) {
               <mat-error>Payment type is required</mat-error>
               }
             </mat-form-field>
@@ -82,10 +92,10 @@
         <div class="">
           <div class="w-100">
             <mat-form-field appearance="outline" class="w-100">
-              <mat-label>Expense Payment Type</mat-label>
+              <mat-label>Expense Description</mat-label>
               <textarea type="text" matInput formControlName="comment"></textarea>
 
-              @if (signUpForm.controls['comment'].hasError('maxlength')) {
+              @if (expenseForm.controls['comment'].hasError('maxlength')) {
               <mat-error>Maximum 200 characters allowed</mat-error>
               }
             </mat-form-field>
@@ -96,7 +106,7 @@
         }
         <div class="button d-flex gap-3 justify-content-end">
           <button type="reset" matButton="outlined">Reset</button>
-          <button type="submit" matButton="outlined" [routerLink]="'/login'">Save</button>
+          <button type="submit" matButton="outlined">Save</button>
         </div>
       </form>
     </mat-card-content>

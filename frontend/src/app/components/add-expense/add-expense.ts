@@ -26,7 +26,6 @@ import { firstValueFrom } from 'rxjs';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    RouterLink,
   ],
   templateUrl: './add-expense.html',
   providers: [provideNativeDateAdapter()],
@@ -44,7 +43,7 @@ export class AddExpense {
     this._currentYear.getDate()
   );
 
-  signUpForm: FormGroup = new FormGroup({
+  expenseForm: FormGroup = new FormGroup({
     expenseName: new FormControl('', [
       Validators.required,
       Validators.minLength(3),
@@ -77,34 +76,27 @@ export class AddExpense {
   }
 
   async submit() {
-    // if (this.signUpForm.valid) {
-    //   try {
-    //     const email = this.signUpForm.get('email')?.value;
-    //     const user = await firstValueFrom(this.userService.checkUser(email));
-    //     if (true) {
-    //       alert("Account already exists");
-    //       return;
-    //     }
-    //     const accNo = await this.geneAccNo();
-    //     const data = {
-    //       firstName: this.signUpForm.get('firstName')?.value,
-    //       lastName: this.signUpForm.get('lastName')?.value,
-    //       email: this.signUpForm.get('email')?.value,
-    //       phone: this.signUpForm.get('phone')?.value,
-    //       password: this.signUpForm.get('password')?.value,
-    //       accNo: accNo,
-    //       balance: 0
-    //     };
-    //     await firstValueFrom(dd);
-    //     alert('Registration successful');
-    //     this.router.navigate(['login']);
-    //   } catch (error) {
-    //     console.error('Error during registration:', error);
-    //     alert('Something went wrong during registration');
-    //   }
-    // } else {
-    //   this.err = true;
-    // }
+    if (this.expenseForm.invalid) {
+      this.expenseForm.markAllAsTouched();
+      if (this.expenseForm.valid) {
+        try {
+          const data = {
+            expenseName: this.expenseForm.get('expenseName')?.value,
+            expenseAmount: this.expenseForm.get('expenseAmount')?.value,
+            expenseCategory: this.expenseForm.get('expenseCategory')?.value,
+            paymentType: this.expenseForm.get('paymentType')?.value,
+            date: this.expenseForm.get('date')?.value,
+            comment: this.expenseForm.get('comment')?.value,
+          };
+          console.log(data);
+        } catch (error) {
+          console.error('Error during registration:', error);
+          alert('Something went wrong during registration');
+        }
+      } else {
+        this.err = true;
+      }
+    }
   }
 }
 
