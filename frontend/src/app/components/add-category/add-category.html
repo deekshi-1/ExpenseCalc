@@ -1,18 +1,20 @@
 <div class="main">
   <mat-form-field appearance="outline">
-    <mat-label>Expense Name</mat-label>
+    <mat-label>Category Name</mat-label>
     <input
       type="text"
       matInput
       [(ngModel)]="newCategory"
-      (keydown)="checkCategory($event)"
-      class=""
+      (input)="checkCategory()"
     />
-    @if (this.err()) {
-    <mat-error>Already exist</mat-error>
-    }
   </mat-form-field>
+  @if (err()) {
+    <mat-error class="text-center">Already exists</mat-error>
+  }
+
   <div class="d-flex justify-content-center mt-4">
-    <button matButton="outlined">Add Category</button>
+    <button mat-stroked-button color="primary" (click)="addCategory()">
+      Add Category
+    </button>
   </div>
 </div>

@@ -5,7 +5,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { Router, RouterLink } from '@angular/router';
-import { UserService } from '../../services/user-service';
+import { UserService } from '../../services/user/user-service';
 import { firstValueFrom } from 'rxjs';
 
 

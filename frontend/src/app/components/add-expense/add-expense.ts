@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -11,6 +11,8 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AddCategory } from '../add-category/add-category';
+import { CategoryService } from '../../services/category/category-service';
+import { firstValueFrom } from 'rxjs';
 
 
 @Component({
@@ -21,6 +23,7 @@ import { AddCategory } from '../add-category/add-category';
 })
 export class AddExpense {
   err: boolean = false;
+  category = signal<Category[]>([])
 
   private readonly _currentYear = new Date();
   readonly minDate = new Date(this._currentYear.getFullYear() - 2, 0, 1);
@@ -42,7 +45,7 @@ export class AddExpense {
     expenseCategory: new FormControl('', [
       Validators.required
     ]),
-    paymentType: new FormControl('', [
+    paymentType: new FormControl('cash', [
       Validators.required
     ]),
     date: new FormControl('', [
@@ -53,16 +56,20 @@ export class AddExpense {
     ])
   });
 
-  constructor(private router: Router, private dialog: MatDialog) { }
+  constructor(private router: Router, private dialog: MatDialog, private catagoryService: CategoryService) {
+    this.getCategory();
+  }
 
   openDialog() {
-    const dialogRef = this.dialog.open(AddCategory);
-
+    const dialogRef = this.dialog.open(AddCategory, { autoFocus: false });
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
     });
   }
-
+  async getCategory() {
+    let response = await firstValueFrom(this.catagoryService.getCategory())
+    this.category.set(response.body ?? []);
+  }
 
 
   async submit() {
@@ -101,4 +108,9 @@ export class AddExpense {
     //   this.err = true;
     // }
   }
+}
+
+interface Category {
+  _id: number;
+  name: string;
 }

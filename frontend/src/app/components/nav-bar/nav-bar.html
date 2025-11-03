@@ -1,8 +1,8 @@
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav #sidenav mode="side" class="sidenav pt-5" fixedInViewport>
     <mat-nav-list>
-      <a mat-list-item (click)="openDialog()">Profile</a>
-      <a mat-list-item [routerLink]="'/ExpenseCalc/add-expense'">Add New Expense</a>
+      <a mat-list-item (click)="sidenav.toggle();openDialog()">Profile</a>
+      <a mat-list-item (click)="sidenav.toggle();gotoAddExpense()">Add New Expense</a>
     </mat-nav-list>
   </mat-sidenav>
 
@@ -12,7 +12,7 @@
         <button mat-icon-button (click)="sidenav.toggle()" aria-label="Toggle sidenav">
           <mat-icon>menu</mat-icon>
         </button>
-        <span  [routerLink]="'/'">My App</span>
+        <span [routerLink]="'/'" (click)="sidenav.toggle();">My App</span>
       </div>
       <div class="right">logout</div>
     </mat-toolbar>

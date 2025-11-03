@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 
 
@@ -23,7 +23,7 @@ export class UserService {
   }
 
   updateUser(data: any) {
-    return this.http.patch<any>(this.api + 'user/upDate', DataTransfer, { withCredentials: true, observe: 'response' })
+    return this.http.patch<any>(this.api + 'user/upDate', data, { withCredentials: true, observe: 'response' })
   }
 
 }
