@@ -5,25 +5,22 @@ import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root',
 })
-export class CategoryService {
+export class ExpenseService {
   constructor(private http: HttpClient) {}
   api = environment.apiUserUrl;
 
-  getCategory() {
-    return this.http.get<any[]>(this.api + 'category/getCategory', {
+  getExpense() {
+    console.log('asdasd');
+
+    return this.http.get<any>(this.api + 'expense/getExpense', {
       withCredentials: true,
       observe: 'response',
     });
   }
 
-  addCategory(data: any) {
-    return this.http.post<any>(this.api + 'category/addCategory', data, {
-      withCredentials: true,
-      observe: 'response',
-    });
-  }
-  removeId(id: any) {
-    return this.http.delete<any>(`${this.api}category/removeCategory/${id}`, {
+  addExpense(data: any) {
+    console.log(data);
+    return this.http.post<any>(this.api + 'expense/addExpense', data, {
       withCredentials: true,
       observe: 'response',
     });

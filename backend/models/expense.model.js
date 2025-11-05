@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const User = require("./User");
+const User = require("./user.model");
 
 const expenseSchema = mongoose.Schema(
   {
@@ -11,6 +11,10 @@ const expenseSchema = mongoose.Schema(
     name: {
       type: String,
       required: [true, "Please add an expense name"],
+    },
+    paymentType: {
+      type: String,
+      required: [true, "Payment type required"],
     },
     amount: {
       type: Number,
@@ -25,6 +29,7 @@ const expenseSchema = mongoose.Schema(
       required: [true, "Please add a category"],
       ref: "Category",
     },
+    comment: { type: String },
   },
   {
     timestamps: true,
@@ -41,7 +46,7 @@ expenseSchema.post("save", async function (doc, next) {
   } catch (err) {
     next(err);
   }
-})
+});
 
 const Expense = mongoose.model("Expense", expenseSchema);
 module.exports = Expense;

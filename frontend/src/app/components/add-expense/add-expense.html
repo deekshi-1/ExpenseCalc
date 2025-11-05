@@ -12,13 +12,13 @@
           <div class="form-div">
             <mat-form-field appearance="outline">
               <mat-label>Expense Name</mat-label>
-              <input type="text" matInput formControlName="expenseName" />
-              @if (expenseForm.controls['expenseName'].hasError('required') &&
-              expenseForm.controls['expenseName'].touched) {
+              <input type="text" matInput formControlName="name" />
+              @if (expenseForm.controls['name'].hasError('required') &&
+              expenseForm.controls['name'].touched) {
               <mat-error>Expense name is required</mat-error>
-              } @else if (expenseForm.controls['expenseName'].hasError('minlength')) {
+              } @else if (expenseForm.controls['name'].hasError('minlength')) {
               <mat-error>Minimum 3 characters required</mat-error>
-              } @else if (expenseForm.controls['expenseName'].hasError('maxlength')) {
+              } @else if (expenseForm.controls['name'].hasError('maxlength')) {
               <mat-error>Maximum 50 characters allowed</mat-error>
               }
             </mat-form-field>
@@ -26,11 +26,11 @@
           <div class="form-div">
             <mat-form-field appearance="outline">
               <mat-label>Amount Spent</mat-label>
-              <input type="number" min="0" matInput formControlName="expenseAmount" />
-              @if (expenseForm.controls['expenseAmount'].hasError('required') &&
-              expenseForm.controls['expenseAmount'].touched) {
+              <input type="number" min="0" matInput formControlName="amount" />
+              @if (expenseForm.controls['amount'].hasError('required') &&
+              expenseForm.controls['amount'].touched) {
               <mat-error>Amount is required</mat-error>
-              } @else if (expenseForm.controls['expenseAmount'].hasError('min')) {
+              } @else if (expenseForm.controls['amount'].hasError('min')) {
               <mat-error>Amount must be greater than 0</mat-error>
               }
             </mat-form-field>

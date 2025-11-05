@@ -13,6 +13,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AddCategory } from '../add-category/add-category';
 import { CategoryService } from '../../services/category/category-service';
 import { firstValueFrom } from 'rxjs';
+import { ExpenseService } from '../../services/expense/expense-service';
 
 @Component({
   selector: 'app-add-expense',
@@ -44,12 +45,12 @@ export class AddExpense {
   );
 
   expenseForm: FormGroup = new FormGroup({
-    expenseName: new FormControl('', [
+    name: new FormControl('', [
       Validators.required,
       Validators.minLength(3),
       Validators.maxLength(50),
     ]),
-    expenseAmount: new FormControl('', [Validators.required, Validators.min(1)]),
+    amount: new FormControl('', [Validators.required, Validators.min(1)]),
     expenseCategory: new FormControl('', [Validators.required]),
     paymentType: new FormControl('cash', [Validators.required]),
     date: new FormControl('', [Validators.required]),
@@ -59,7 +60,8 @@ export class AddExpense {
   constructor(
     private router: Router,
     private dialog: MatDialog,
-    private catagoryService: CategoryService
+    private catagoryService: CategoryService,
+    private expenseService: ExpenseService
   ) {
     this.getCategory();
   }
@@ -67,28 +69,35 @@ export class AddExpense {
   openDialog() {
     const dialogRef = this.dialog.open(AddCategory, { autoFocus: false, width: '50vw' });
     dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog result: ${result}`);
+      this.getCategory();
     });
   }
+
   async getCategory() {
     let response = await firstValueFrom(this.catagoryService.getCategory());
     this.category.set(response.body ?? []);
+    let resp = await firstValueFrom(this.expenseService.getExpense());
+    console.log(resp);
   }
-
+  
   async submit() {
     if (this.expenseForm.invalid) {
       this.expenseForm.markAllAsTouched();
+    } else {
+      console.log(this.expenseForm.valid);
+
       if (this.expenseForm.valid) {
         try {
           const data = {
-            expenseName: this.expenseForm.get('expenseName')?.value,
-            expenseAmount: this.expenseForm.get('expenseAmount')?.value,
+            name: this.expenseForm.get('name')?.value,
+            amount: this.expenseForm.get('amount')?.value,
             expenseCategory: this.expenseForm.get('expenseCategory')?.value,
             paymentType: this.expenseForm.get('paymentType')?.value,
             date: this.expenseForm.get('date')?.value,
             comment: this.expenseForm.get('comment')?.value,
           };
-          console.log(data);
+          let response = await firstValueFrom(this.expenseService.addExpense(data));
+          console.log('response ', response);
         } catch (error) {
           console.error('Error during registration:', error);
           alert('Something went wrong during registration');
