@@ -1,0 +1,39 @@
+<div class="div">
+  <mat-card class="example-card" appearance="outlined">
+    <mat-card-header>
+      <mat-card-title-group>
+        <mat-card-title>Detail Summary</mat-card-title>
+        <mat-card-subtitle>Click to view </mat-card-subtitle>
+      </mat-card-title-group>
+    </mat-card-header>
+    <mat-card-content>
+      <table class="table table-bordered text-center my-3">
+        <thead>
+          <tr>
+            <th scope="col">No</th>
+            <th scope="col">Name</th>
+            <th scope="col">Date Added</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Payment Type</th>
+            <th scope="col">Category</th>
+            <th scope="col">Comment</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of expenseList().expenses; track item._id; let i = $index) {
+          <tr>
+            <th scope="row">{{ i + 1 }}</th>
+            <td>{{ item.name }}</td>
+            <td>{{ item.date | date : 'shortDate' }}</td>
+            <td>{{ item.amount }}</td>
+            <td>{{ item.paymentType }}</td>
+            <td>{{ item.category.name }}</td>
+            <td>{{ item.comment }}</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </mat-card-content>
+    <span class="add-icon"><mat-icon>add</mat-icon></span>
+  </mat-card>
+</div>

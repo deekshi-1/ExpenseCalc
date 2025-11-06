@@ -1,0 +1,13 @@
+.add-icon {
+  width: fit-content;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  padding: 5px;
+}
+
+mat-icon {
+  border-radius: 10px;
+  color: white;
+  background-color: red;
+}

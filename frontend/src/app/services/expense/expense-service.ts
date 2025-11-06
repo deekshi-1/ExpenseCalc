@@ -10,8 +10,6 @@ export class ExpenseService {
   api = environment.apiUserUrl;
 
   getExpense() {
-    console.log('asdasd');
-
     return this.http.get<any>(this.api + 'expense/getExpense', {
       withCredentials: true,
       observe: 'response',
@@ -21,6 +19,12 @@ export class ExpenseService {
   addExpense(data: any) {
     console.log(data);
     return this.http.post<any>(this.api + 'expense/addExpense', data, {
+      withCredentials: true,
+      observe: 'response',
+    });
+  }
+  getDashboard() {
+    return this.http.get<any>(this.api + 'expense/dashboard', {
       withCredentials: true,
       observe: 'response',
     });

@@ -4,6 +4,7 @@ const expenseController = require("../controllers/expense.controller");
 const auth = require("../middleware/authMiddleware");
 
 router.route("/getExpense").get(auth, expenseController.getExpense);
+router.route("/dashboard").get(auth, expenseController.getDashboard);
 
 router.route("/addExpense").post(auth, expenseController.addExpense);
 

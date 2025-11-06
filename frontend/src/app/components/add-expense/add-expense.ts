@@ -76,10 +76,8 @@ export class AddExpense {
   async getCategory() {
     let response = await firstValueFrom(this.catagoryService.getCategory());
     this.category.set(response.body ?? []);
-    let resp = await firstValueFrom(this.expenseService.getExpense());
-    console.log(resp);
   }
-  
+
   async submit() {
     if (this.expenseForm.invalid) {
       this.expenseForm.markAllAsTouched();
@@ -97,7 +95,12 @@ export class AddExpense {
             comment: this.expenseForm.get('comment')?.value,
           };
           let response = await firstValueFrom(this.expenseService.addExpense(data));
-          console.log('response ', response);
+          if (response.status === 201) {
+            const currentPaymentType = this.expenseForm.get('paymentType')?.value;
+            this.expenseForm.reset({
+              paymentType: currentPaymentType,
+            });
+          }
         } catch (error) {
           console.error('Error during registration:', error);
           alert('Something went wrong during registration');
@@ -106,6 +109,18 @@ export class AddExpense {
         this.err = true;
       }
     }
+  }
+
+  resetForm() {
+    const currentPaymentType = this.expenseForm.get('paymentType')?.value;
+
+    this.expenseForm.reset({
+      paymentType: currentPaymentType,
+    });
+
+    this.expenseForm.markAsPristine();
+    this.expenseForm.markAsUntouched();
+    this.err = false;
   }
 }
 

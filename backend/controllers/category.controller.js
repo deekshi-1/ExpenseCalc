@@ -54,7 +54,6 @@ removeCategory = async (req, res, next) => {
     await User.findByIdAndUpdate(userId, { $pull: { categories: id } });
     const updatedCategories = await Category.find({ user: userId });
     res.status(200).json(updatedCategories);
-    
   } catch (error) {
     res.status(400);
     next(new Error(error.message || "Failed to remove category"));

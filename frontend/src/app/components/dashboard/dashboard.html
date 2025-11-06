@@ -1,9 +1,10 @@
 <div class="main">
-  <div class="overview d-flex justify-content-between gap-5 my-4">
+  <div class="overview d-flex justify-content-between gap-4 my-4">
     <div class="box">
       <mat-icon>calendar_month</mat-icon>
       <p class="data"></p>
       <p>First Expense Date</p>
+      <span>{{ dashboardDetails().firstExpense.createdAt|date:'short'}}</span>
     </div>
     <div class="box">
       <mat-icon>calendar_month</mat-icon>
@@ -21,7 +22,7 @@
       <p>Money spend</p>
     </div>
   </div>
-  <div class="midBlock d-flex justify-content-between gap-5 ">
+  <div class="midBlock d-flex justify-content-between gap-5">
     <mat-card class="example-card" appearance="outlined">
       <mat-card-header>
         <mat-card-title-group>
@@ -50,5 +51,7 @@
       </mat-card-content>
     </mat-card>
   </div>
-  <div class="bottom"></div>
+  <div class="bottom my-3">
+    <app-expense-list></app-expense-list>
+  </div>
 </div>

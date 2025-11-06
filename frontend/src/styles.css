@@ -9,5 +9,5 @@ body {
   font-family: Roboto, 'Helvetica Neue', sans-serif;
   background: url('/images/bg.png') no-repeat center center fixed;
   background-size: cover;
-  cursor: pointer;
+  cursor: default;
 }
