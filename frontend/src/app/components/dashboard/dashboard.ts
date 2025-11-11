@@ -6,11 +6,11 @@ import { ExpenseList } from '../expense-list/expense-list';
 import { Router } from '@angular/router';
 import { ExpenseService } from '../../services/expense/expense-service';
 import { firstValueFrom } from 'rxjs';
-import { DatePipe } from '@angular/common';
+import { CurrencyPipe, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [MatIconModule, MatCardModule, ExpenseList, DatePipe],
+  imports: [MatIconModule, MatCardModule, ExpenseList, DatePipe,CurrencyPipe],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })

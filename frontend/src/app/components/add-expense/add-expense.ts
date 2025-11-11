@@ -1,5 +1,5 @@
-import { Component, signal } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, ViewChild, signal } from '@angular/core';
+import { FormControl, FormGroup, FormGroupDirective, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -35,6 +35,7 @@ import { ExpenseService } from '../../services/expense/expense-service';
 export class AddExpense {
   err: boolean = false;
   category = signal<Category[]>([]);
+  @ViewChild(FormGroupDirective) formDirective!: FormGroupDirective;
 
   private readonly _currentYear = new Date();
   readonly minDate = new Date(this._currentYear.getFullYear() - 2, 0, 1);
@@ -97,7 +98,7 @@ export class AddExpense {
           let response = await firstValueFrom(this.expenseService.addExpense(data));
           if (response.status === 201) {
             const currentPaymentType = this.expenseForm.get('paymentType')?.value;
-            this.expenseForm.reset({
+            this.formDirective?.resetForm({
               paymentType: currentPaymentType,
             });
           }
@@ -114,7 +115,7 @@ export class AddExpense {
   resetForm() {
     const currentPaymentType = this.expenseForm.get('paymentType')?.value;
 
-    this.expenseForm.reset({
+    this.formDirective?.resetForm({
       paymentType: currentPaymentType,
     });
 

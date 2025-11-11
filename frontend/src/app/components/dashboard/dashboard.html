@@ -4,22 +4,25 @@
       <mat-icon>calendar_month</mat-icon>
       <p class="data"></p>
       <p>First Expense Date</p>
-      <span>{{ dashboardDetails().firstExpense.createdAt|date:'short'}}</span>
+      <span>{{ dashboardDetails().firstExpense?.createdAt|date:'short'}}</span>
     </div>
     <div class="box">
       <mat-icon>calendar_month</mat-icon>
       <p class="data"></p>
       <p>Latest Expense Date</p>
+      <span>{{ dashboardDetails().lastExpense?.createdAt|date:'short'}}</span>
     </div>
     <div class="box">
       <mat-icon>scoreboard</mat-icon>
       <p class="data"></p>
       <p>Number of Entries</p>
+      <span>{{ dashboardDetails().count}}</span>
     </div>
     <div class="box">
       <mat-icon>attach_money</mat-icon>
       <p class="data"></p>
       <p>Money spend</p>
+      <span>{{ dashboardDetails().totalAmount | currency:'INR' }}</span>
     </div>
   </div>
   <div class="midBlock d-flex justify-content-between gap-5">
@@ -35,8 +38,7 @@
         ullam nulla eligendi deleniti cumque doloribus labore error enim molestiae aut velit rerum
         laborum voluptas omnis! Necessitatibus magnam dolorum illo maxime. Quod non vero eveniet ea
         distinctio dolores ipsum quos nisi.
-      </mat-card-content> </mat-card
-    ><mat-card class="example-card" appearance="outlined">
+      </mat-card-content> </mat-card><mat-card class="example-card" appearance="outlined">
       <mat-card-header>
         <mat-card-title-group>
           <mat-card-title>Expense Monthly Summary</mat-card-title>
@@ -52,6 +54,6 @@
     </mat-card>
   </div>
   <div class="bottom my-3">
-    <app-expense-list></app-expense-list>
+    <app-expense-list [expenses]="dashboardDetails().expenses"></app-expense-list>
   </div>
 </div>

@@ -1,28 +1,21 @@
-import { Component, signal } from '@angular/core';
-import { ExpenseService } from '../../services/expense/expense-service';
-import { Router } from '@angular/router';
-import { firstValueFrom } from 'rxjs';
+import { Component, Input, signal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-expense-list',
-  imports: [MatIconModule, MatCardModule,DatePipe],
+  imports: [CommonModule, MatIconModule, MatCardModule, RouterLink],
   templateUrl: './expense-list.html',
   styleUrl: './expense-list.css',
 })
 export class ExpenseList {
-  expenseList = signal<any>({});
+  private expenseListSignal = signal<any[]>([]);
+  readonly expenseList = this.expenseListSignal.asReadonly();
 
-  constructor(private router: Router, private expenseService: ExpenseService) {
-    // this.getExpenseList();
-  }
-
-  async getExpenseList() {
-    const resp = await firstValueFrom(this.expenseService.getExpense());
-    
-    this.expenseList.set(resp.body)
-    console.log(this.expenseList().expenses);
+  @Input({ required: false })
+  set expenses(value: any[] | undefined | null) {
+    this.expenseListSignal.set(Array.isArray(value) ? value : []);
   }
 }

@@ -20,20 +20,20 @@
           </tr>
         </thead>
         <tbody>
-          @for (item of expenseList().expenses; track item._id; let i = $index) {
+          @for (item of expenseList(); track item._id ?? item.name; let i = $index) {
           <tr>
             <th scope="row">{{ i + 1 }}</th>
             <td>{{ item.name }}</td>
             <td>{{ item.date | date : 'shortDate' }}</td>
-            <td>{{ item.amount }}</td>
+            <td>{{ item.amount | currency : (item.currency ?? 'INR') }}</td>
             <td>{{ item.paymentType }}</td>
-            <td>{{ item.category.name }}</td>
+            <td>{{ item.category?.name }}</td>
             <td>{{ item.comment }}</td>
           </tr>
           }
         </tbody>
       </table>
     </mat-card-content>
-    <span class="add-icon"><mat-icon>add</mat-icon></span>
+    <span class="add-icon" [routerLink]="'/ExpenseCalc/add-expense'"><mat-icon>add</mat-icon></span>
   </mat-card>
 </div>

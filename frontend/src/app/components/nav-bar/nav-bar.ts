@@ -6,12 +6,12 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatDialog } from '@angular/material/dialog';
 import { Profile } from '../profile/profile';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 
 
 @Component({
   selector: 'app-nav-bar',
-  imports: [MatToolbarModule, MatSidenavModule, MatListModule, MatButtonModule, MatIconModule, RouterLink],
+  imports: [MatToolbarModule, MatSidenavModule, MatListModule, MatButtonModule, MatIconModule, RouterLink, RouterOutlet],
   templateUrl: './nav-bar.html',
   styleUrl: './nav-bar.css'
 })
