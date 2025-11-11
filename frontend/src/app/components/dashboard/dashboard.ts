@@ -10,7 +10,7 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [MatIconModule, MatCardModule, ExpenseList, DatePipe,CurrencyPipe],
+  imports: [MatIconModule, MatCardModule, ExpenseList, DatePipe, CurrencyPipe],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
@@ -18,10 +18,10 @@ export class Dashboard {
   dashboardDetails = signal<any>({});
 
   constructor(private router: Router, private expenseService: ExpenseService) {
-    this.getExpenseList();
+    this.getDashboard();
   }
 
-  async getExpenseList() {
+  async getDashboard() {
     const resp = await firstValueFrom(this.expenseService.getDashboard());
     this.dashboardDetails.set(resp.body);
     console.log(resp);

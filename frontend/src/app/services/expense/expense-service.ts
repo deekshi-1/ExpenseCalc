@@ -1,16 +1,20 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ExpenseService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
   api = environment.apiUserUrl;
 
-  getExpense() {
+  getExpense(page: number, pageSize: number) {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('pageSize', pageSize.toString());
     return this.http.get<any>(this.api + 'expense/getExpense', {
+      params,
       withCredentials: true,
       observe: 'response',
     });
@@ -25,6 +29,13 @@ export class ExpenseService {
   }
   getDashboard() {
     return this.http.get<any>(this.api + 'expense/dashboard', {
+      withCredentials: true,
+      observe: 'response',
+    });
+  }
+
+  getExpenseById(id: string) {
+    return this.http.get<any>(this.api + 'expense/getExpense/' + id, {
       withCredentials: true,
       observe: 'response',
     });

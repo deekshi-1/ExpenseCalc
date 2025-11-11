@@ -7,10 +7,18 @@
   width: 250px;
 }
 
+mat-sidenav {
+  background-color: #F5F5F0;
+
+}
+
 mat-toolbar {
   position: sticky;
   top: 0;
   z-index: 2;
+  background-color: #2A4D3E;
+  color: white;
+  
 }
 
 mat-nav-list {
@@ -24,4 +32,8 @@ mat-nav-list {
 
 .main {
   padding: 10px 25px;
+}
+
+.toggle{
+  color: white;
 }

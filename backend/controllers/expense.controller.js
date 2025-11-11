@@ -31,15 +31,27 @@ addExpense = async (req, res, next) => {
   }
 };
 
+
 getExpense = async (req, res, next) => {
   try {
     const userId = req.user._id;
-    const expenses = await Expense.find({ user: userId })
-      .populate("category")
-      .sort({ date: -1 });
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = parseInt(req.query.pageSize) || 10;
+    const skip = (page - 1) * pageSize;
+    const [totalExpenses, expenses] = await Promise.all([
+      Expense.countDocuments({ user: userId }),
+      Expense.find({ user: userId })
+        .populate("category")
+        .sort({ date: -1 })
+        .skip(skip)
+        .limit(pageSize)
+    ]);
     res.status(200).json({
       success: true,
-      count: expenses.length,
+      totalExpenses: totalExpenses,
+      totalPages: Math.ceil(totalExpenses / pageSize),
+      currentPage: page,
+      countOnPage: expenses.length, // How many items are on this specific page
       expenses,
     });
   } catch (error) {
@@ -48,6 +60,7 @@ getExpense = async (req, res, next) => {
     next(new Error(error.message || "Failed to fetch expenses"));
   }
 };
+
 
 getDashboard = async (req, res, next) => {
   try {
@@ -67,7 +80,6 @@ getDashboard = async (req, res, next) => {
       totalAmount,
       firstExpense,
       lastExpense,
-      expenses,
     });
   } catch (error) {
     console.error("Error fetching expenses:", error);
@@ -76,8 +88,35 @@ getDashboard = async (req, res, next) => {
   }
 };
 
+getExpenseById = async (req, res, next) => {
+  try {
+    const userId = req.user._id;
+    const expenseId = req.params.id;
+    
+    const expense = await Expense.findOne({ 
+      _id: expenseId, 
+      user: userId 
+    }).populate("category");
+    
+    if (!expense) {
+      res.status(404);
+      return next(new Error("Expense not found"));
+    }
+    
+    res.status(200).json({
+      success: true,
+      expense,
+    });
+  } catch (error) {
+    console.error("Error fetching expense:", error);
+    res.status(400);
+    next(new Error(error.message || "Failed to fetch expense"));
+  }
+};
+
 module.exports = {
   addExpense,
   getExpense,
   getDashboard,
+  getExpenseById
 };

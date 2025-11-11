@@ -5,7 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, ActivatedRoute } from '@angular/router';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
@@ -58,13 +58,72 @@ export class AddExpense {
     comment: new FormControl('', [Validators.maxLength(200)]),
   });
 
+  expenseId: string | null = null;
+  private expenseData: any = null;
+
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private dialog: MatDialog,
     private catagoryService: CategoryService,
     private expenseService: ExpenseService
   ) {
-    this.getCategory();
+    this.initializeComponent();
+  }
+
+  async initializeComponent() {
+    // Load categories first, then check for expense ID
+    await this.getCategory();
+    this.route.queryParams.subscribe(async (params) => {
+      const id = params['id'];
+      if (id) {
+        this.expenseId = id;
+        await this.loadExpenseData(id);
+      }
+    });
+  }
+
+  async loadExpenseData(id: string) {
+    try {
+      const response = await firstValueFrom(this.expenseService.getExpenseById(id));
+      if (response.status === 200 && response.body?.expense) {
+        this.expenseData = response.body.expense;
+        // Ensure categories are loaded before populating form
+        if (this.category().length > 0) {
+          this.populateForm(this.expenseData);
+        } else {
+          // Wait for categories if not loaded yet
+          await this.getCategory();
+          this.populateForm(this.expenseData);
+        }
+      }
+    } catch (error) {
+      console.error('Error loading expense:', error);
+    }
+  }
+
+  populateForm(expense: any) {
+    // Convert date string to Date object if needed
+    let expenseDate: Date | string = '';
+    if (expense.date) {
+      expenseDate = new Date(expense.date);
+      // Validate the date
+      if (isNaN(expenseDate.getTime())) {
+        expenseDate = '';
+      }
+    }
+    
+    // Get category name from populated category object or use the name directly
+    const categoryName = expense.category?.name || expense.expenseCategory || '';
+    
+    this.expenseForm.patchValue({
+      name: expense.name || '',
+      amount: expense.amount || '',
+      expenseCategory: categoryName,
+      paymentType: expense.paymentType || 'cash',
+      date: expenseDate,
+      comment: expense.comment || '',
+    });
   }
 
   openDialog() {
