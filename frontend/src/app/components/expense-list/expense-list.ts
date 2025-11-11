@@ -6,16 +6,18 @@ import { Router, RouterLink } from "@angular/router";
 import { ExpenseService } from '../../services/expense/expense-service';
 import { firstValueFrom } from 'rxjs';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
 @Component({
   selector: 'app-expense-list',
-  imports: [CommonModule, MatIconModule, MatCardModule, RouterLink, MatPaginatorModule],
+  imports: [CommonModule, MatIconModule, MatCardModule, RouterLink, MatPaginatorModule, MatTooltipModule],
   templateUrl: './expense-list.html',
   styleUrl: './expense-list.css',
 })
 export class ExpenseList {
   expenseListSignal = signal<any[]>([]);
   totalExpenses: number = 0;
-  pagesize: number = 5;
+  pagesize: number = 10;
   currentPage: number = 1;
   pageSizeOptions = [5, 10, 20];
 

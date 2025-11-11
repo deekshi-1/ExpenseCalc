@@ -7,10 +7,12 @@ import { Router } from '@angular/router';
 import { ExpenseService } from '../../services/expense/expense-service';
 import { firstValueFrom } from 'rxjs';
 import { CurrencyPipe, DatePipe } from '@angular/common';
+import { Chart } from '../chart/chart';
+import { Graph } from '../graph/graph';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [MatIconModule, MatCardModule, ExpenseList, DatePipe, CurrencyPipe],
+  imports: [MatIconModule, MatCardModule, ExpenseList, DatePipe, CurrencyPipe, Chart, Graph],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })

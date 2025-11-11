@@ -21,14 +21,14 @@
         </thead>
         <tbody>
           @for (item of expenseListSignal(); track item._id ?? item.name; let i = $index) {
-          <tr (click)="openExpense(item._id)">
+          <tr (click)="openExpense(item._id)" class="datas">
             <th scope="row">{{(currentPage - 1) * pagesize + i + 1 }}</th>
             <td>{{ item.name }}</td>
             <td>{{ item.date | date : 'shortDate' }}</td>
             <td>{{ item.amount | currency : (item.currency ?? 'INR') }}</td>
             <td>{{ item.paymentType }}</td>
             <td>{{ item.category?.name }}</td>
-            <td>{{ item.comment }}</td>
+            <td [matTooltip]="(item?.comment?.length > 20) ? item.comment : null"> {{ item?.comment?.length > 20 ? (item.comment | slice:0:20) + '…' : item.comment }}</td>
           </tr>
           }
 
@@ -38,6 +38,6 @@
         (page)="handlePageEvent($event)" aria-label="Select page of expenses">
       </mat-paginator>
     </mat-card-content>
-    <span class="add-icon" [routerLink]="'/ExpenseCalc/add-expense'"><mat-icon>add</mat-icon></span>
+    <span class="add-icon" [routerLink]="'/ExpenseCalc/add-expense'"><mat-icon matTooltip="Add expense">add</mat-icon></span>
   </mat-card>
 </div>

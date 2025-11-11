@@ -112,10 +112,10 @@ export class AddExpense {
         expenseDate = '';
       }
     }
-    
+
     // Get category name from populated category object or use the name directly
     const categoryName = expense.category?.name || expense.expenseCategory || '';
-    
+
     this.expenseForm.patchValue({
       name: expense.name || '',
       amount: expense.amount || '',
@@ -154,12 +154,19 @@ export class AddExpense {
             date: this.expenseForm.get('date')?.value,
             comment: this.expenseForm.get('comment')?.value,
           };
-          let response = await firstValueFrom(this.expenseService.addExpense(data));
-          if (response.status === 201) {
-            const currentPaymentType = this.expenseForm.get('paymentType')?.value;
-            this.formDirective?.resetForm({
-              paymentType: currentPaymentType,
-            });
+          if (this.expenseId) {
+            const response = await firstValueFrom(this.expenseService.updateExpense(this.expenseId, data));
+            if (response.status === 200) {
+              this.router.navigate(['/']); // navigate away on successful update
+            }
+          } else {
+            const response = await firstValueFrom(this.expenseService.addExpense(data));
+            if (response.status === 201) {
+              const currentPaymentType = this.expenseForm.get('paymentType')?.value;
+              this.formDirective?.resetForm({
+                paymentType: currentPaymentType,
+              });
+            }
           }
         } catch (error) {
           console.error('Error during registration:', error);
@@ -171,13 +178,29 @@ export class AddExpense {
     }
   }
 
+  async deleteExpense() {
+    if (!this.expenseId) return;
+    try {
+      const response = await firstValueFrom(this.expenseService.deleteExpense(this.expenseId));
+      if (response.status === 200) {
+        this.router.navigate(['/']);
+      }
+    } catch (error) {
+      console.error('Error deleting expense:', error);
+      alert('Something went wrong during delete');
+    }
+  }
+
   resetForm() {
     const currentPaymentType = this.expenseForm.get('paymentType')?.value;
 
     this.formDirective?.resetForm({
       paymentType: currentPaymentType,
     });
-
+    if (this.expenseId) {
+      this.expenseId = null;
+      this.router.navigate(['ExpenseCalc/add-expense'])
+    }
     this.expenseForm.markAsPristine();
     this.expenseForm.markAsUntouched();
     this.err = false;

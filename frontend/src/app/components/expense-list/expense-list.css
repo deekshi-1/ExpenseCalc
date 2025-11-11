@@ -15,3 +15,7 @@ mat-icon {
 .example-card{
   background-color: #f6e4d4;
 }
+
+.datas{
+  cursor: pointer;
+}

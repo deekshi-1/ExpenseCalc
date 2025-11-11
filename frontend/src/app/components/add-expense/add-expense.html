@@ -40,13 +40,7 @@
           <div class="form-div">
             <mat-form-field appearance="outline">
               <mat-label>Date</mat-label>
-              <input
-                matInput
-                [matDatepicker]="picker"
-                formControlName="date"
-                [min]="minDate"
-                [max]="maxDate"
-              />
+              <input matInput [matDatepicker]="picker" formControlName="date" [min]="minDate" [max]="maxDate" />
               <mat-hint>MM/DD/YYYY</mat-hint>
               <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
@@ -62,14 +56,12 @@
               <mat-select formControlName="expenseCategory">
                 @for (item of category(); track item._id) {<mat-option value="{{ item.name }}">{{
                   item.name
-                }}</mat-option
-                >}
+                  }}</mat-option>}
               </mat-select>
               @if (expenseForm.controls['expenseCategory'].hasError('required') &&
               expenseForm.controls['expenseCategory'].touched) {
               <mat-error>Category is required</mat-error>
-              }</mat-form-field
-            >
+              }</mat-form-field>
           </div>
         </div>
         <div class="d-flex justify-content-between gap-3 mb-1">
@@ -105,8 +97,13 @@
         <mat-error class="text-center mb-3">All fields are required</mat-error>
         }
         <div class="button d-flex gap-3 justify-content-end">
+          @if (expenseId!=null) {
+          <button type="button" matButton="filled" color="warn" style="background-color: rgb(179, 26, 26);"
+            (click)="deleteExpense()">Delete</button>
+          }
           <button type="button" matButton="outlined" (click)="resetForm()">Reset</button>
-          <button type="submit" matButton="outlined">Save</button>
+          <button type="submit" matButton="outlined" style="background-color: rgb(57, 231, 60); color: white;">{{
+            expenseId ? 'Update' : 'Save' }}</button>
         </div>
       </form>
     </mat-card-content>
