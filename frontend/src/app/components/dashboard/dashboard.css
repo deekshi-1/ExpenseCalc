@@ -21,3 +21,8 @@ p {
 .main {
   margin: auto;
 }
+
+.example-card{
+  background-color: #f6e4d4;
+  width: 40%;
+}

@@ -26,7 +26,7 @@
     </div>
   </div>
   <div class="midBlock d-flex justify-content-between gap-5">
-    <mat-card class="example-card" appearance="outlined">
+    <mat-card class="example-card " appearance="outlined">
       <mat-card-header>
         <mat-card-title-group>
           <mat-card-title>Category Breakdown</mat-card-title>
@@ -43,7 +43,15 @@
         </mat-card-title-group>
       </mat-card-header>
       <mat-card-content>
-        <app-graph></app-graph>
+        <div class="chart-container">
+          <canvas
+          baseChart
+          [data]="barChartData"
+          [options]="barChartOptions"
+          [type]="barChartType"
+        >
+        </canvas>
+        </div>
       </mat-card-content>
     </mat-card>
   </div>
