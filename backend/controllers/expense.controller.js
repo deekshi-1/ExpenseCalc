@@ -74,12 +74,40 @@ getDashboard = async (req, res, next) => {
     );
     const firstExpense = expenses[0];
     const lastExpense = expenses[expenses.length - 1];
+    const categoryTotals = await Expense.aggregate([
+      { $match: { user: userId } },
+      {
+        $lookup: {
+          from: "categories",
+          localField: "category",
+          foreignField: "_id",
+          as: "categoryDoc"
+        }
+      },
+      { $unwind: "$categoryDoc" },
+      {
+        $group: {
+          _id: "$categoryDoc.name",
+          total: { $sum: "$amount" }
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          category: "$_id",
+          total: 1
+        }
+      },
+      { $sort: { total: -1 } }
+    ]);
+
     res.status(200).json({
       success: true,
       count: expenses.length,
       totalAmount,
       firstExpense,
       lastExpense,
+      categoryTotals,
     });
   } catch (error) {
     console.error("Error fetching expenses:", error);
@@ -136,10 +164,12 @@ getAnalyticsByYear = async (req, res, next) => {
     const yearFilter = req.query.year ? parseInt(req.query.year, 10) : undefined;
 
     const monthlyTotals = await Expense.aggregate([
-      { $match: Object.assign(
-        { user: userId },
-        yearFilter ? { $expr: { $eq: [{ $year: "$date" }, yearFilter] } } : {}
-      ) },
+      {
+        $match: Object.assign(
+          { user: userId },
+          yearFilter ? { $expr: { $eq: [{ $year: "$date" }, yearFilter] } } : {}
+        )
+      },
       {
         $group: {
           _id: {
@@ -172,10 +202,21 @@ getAnalyticsByYear = async (req, res, next) => {
       },
       { $sort: { year: 1, month: 1 } }
     ]);
-
+    const yearsResult = await Expense.aggregate([
+      { $match: { user: userId } },
+      {
+        $group: {
+          _id: { $year: "$date" }
+        }
+      },
+      { $project: { _id: 0, year: "$_id" } },
+      { $sort: { year: 1 } }
+    ]);
+    const uniqueYears = yearsResult.map(y => y.year);
     res.status(200).json({
-      success: true,
-      monthlyTotals
+      success: true,  
+      monthlyTotals,
+      uniqueYears
     });
   } catch (error) {
     console.error("Error fetching yearly analytics:", error);
@@ -188,17 +229,17 @@ getExpenseById = async (req, res, next) => {
   try {
     const userId = req.user._id;
     const expenseId = req.params.id;
-    
-    const expense = await Expense.findOne({ 
-      _id: expenseId, 
-      user: userId 
+
+    const expense = await Expense.findOne({
+      _id: expenseId,
+      user: userId
     }).populate("category");
-    
+
     if (!expense) {
       res.status(404);
       return next(new Error("Expense not found"));
     }
-    
+
     res.status(200).json({
       success: true,
       expense,

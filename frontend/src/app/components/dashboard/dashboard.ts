@@ -1,5 +1,4 @@
 import { Component, signal, ViewChild } from '@angular/core';
-import { NavBar } from '../nav-bar/nav-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { ExpenseList } from '../expense-list/expense-list';
@@ -7,31 +6,35 @@ import { Router } from '@angular/router';
 import { ExpenseService } from '../../services/expense/expense-service';
 import { firstValueFrom } from 'rxjs';
 import { CurrencyPipe, DatePipe } from '@angular/common';
-import { Charts } from '../chart/chart'; 
+import { Charts } from '../chart/chart';
 import { Chart as ChartJS, ChartConfiguration, ChartData, ChartType, registerables } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { Graph } from '../graph/graph';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [MatIconModule, MatCardModule, ExpenseList, DatePipe, CurrencyPipe,Charts,BaseChartDirective],
+  imports: [MatIconModule, MatCardModule, MatDialogModule, ExpenseList, DatePipe, CurrencyPipe, Charts, BaseChartDirective],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
 export class Dashboard {
+  dashboardDetails = signal<any>({});
+
+
   @ViewChild(BaseChartDirective) chart: BaseChartDirective<'bar'> | undefined;
 
-  dashboardDetails = signal<any>({});
 
   public barChartOptions: ChartConfiguration<'bar'>['options'] = {
     scales: {
       x: {},
       y: {
-        min: 10,
+        beginAtZero: true
       },
     },
     plugins: {
       legend: {
-        display: true,
+        display: false,
       }
     },
   };
@@ -40,21 +43,53 @@ export class Dashboard {
   public barChartType = 'bar' as const;
 
   public barChartData: ChartData<'bar'> = {
-    labels: ['2006', '2007', '2008', '2009', '2010', '2011', '2012'],
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
     datasets: [
       { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
-      { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' },
     ],
   };
 
 
-  constructor(private router: Router, private expenseService: ExpenseService) {
+  constructor(private router: Router, private expenseService: ExpenseService, private dialog: MatDialog,) {
     this.getDashboard();
   }
 
+
+
   async getDashboard() {
-    const resp = await firstValueFrom(this.expenseService.getDashboard());
-    this.dashboardDetails.set(resp.body);
-    console.log(resp);
+    try {
+      const [dashboardResp, analyticsResp] = await Promise.all([
+        firstValueFrom(this.expenseService.getDashboard()),
+        firstValueFrom(this.expenseService.getMonthlyAnalytics(2025))
+      ]);
+
+      this.dashboardDetails.set(dashboardResp.body);
+      this.updateMonthlyChart(analyticsResp.body.monthlyTotals);
+    } catch (err) {
+      console.error('Error fetching dashboard data', err);
+    }
   }
+
+  updateMonthlyChart(data: any) {
+    const monthLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const totals = new Array(12).fill(0);
+    data.forEach((m: any) => {
+      // Chart.js months are 0-indexed (Jan = 0)
+      totals[m.month - 1] = m.total;
+    });
+
+    this.barChartData = {
+      labels: monthLabels,
+      datasets: [
+        { data: totals, label: 'Monthly Expenses' }
+      ]
+    };
+
+    this.chart?.update();
+  }
+
+  openDialog() {
+    const dialogRef = this.dialog.open(Graph, { autoFocus: false, width: '50vw' });
+  }
+
 }
