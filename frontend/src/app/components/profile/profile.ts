@@ -49,7 +49,7 @@ export class Profile {
       try {
         let response = await firstValueFrom(
           this.userService.updateUser({
-            name: this.name().trim(),
+            name: this.name(),
           })
         );
         if (response.status === 200) {

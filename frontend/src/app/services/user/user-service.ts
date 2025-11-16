@@ -11,10 +11,12 @@ export class UserService {
   api = environment.apiUserUrl;
 
   login(data: any) {
+    data.email = data.email.toLowerCase();
     return this.http.post<any[]>(this.api + 'auth/login', data, { withCredentials: true, observe: 'response' })
   }
 
   signup(data: any) {
+    data.email = data.email.toLowerCase();
     return this.http.post<any>(this.api + 'auth/signup', data, { observe: 'response' })
   }
 

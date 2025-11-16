@@ -29,7 +29,7 @@ export class Login {
 
   async submit() {
     const data = {
-      email: this.loginForm.get('email')?.value,
+      email: this.loginForm.get('email')?.value.toLowerCase(),
       password: this.loginForm.get('password')?.value
     };
 

@@ -1,14 +1,25 @@
 const Expense = require("../models/expense.model");
 const Category = require("../models/category.model");
+const User = require("../models/user.model");
 
 addExpense = async (req, res, next) => {
   try {
     const { name, paymentType, amount, date, expenseCategory, comment } =
       req.body;
-    const cat = await Category.findOne({
+
+    let cat = await Category.findOne({
       name: expenseCategory,
       user: req.user._id,
     });
+
+    if (!cat) {
+      cat = new Category({ name: expenseCategory, user: req.user._id });
+      await cat.save();
+      // Update user's categories array
+      await User.findByIdAndUpdate(req.user._id, {
+        $push: { categories: cat._id },
+      });
+    }
 
     const expense = await Expense.create({
       user: req.user._id,

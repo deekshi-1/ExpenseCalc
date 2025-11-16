@@ -35,3 +35,20 @@ form {
 .form-div > mat-form-field {
   width: 100%;
 }
+
+mat-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.import-button {
+  margin-left: auto;
+}
+
+.import-button button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

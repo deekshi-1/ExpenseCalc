@@ -8,9 +8,9 @@ const generateToken = (id) => {
   });
 };
 
-checkLogin = async (req, res) => {
+checkLogin = async (req, res, next) => {
   const { email, password } = req.body;
-
+  
   const user = await User.findOne({ email });
 
   if (user && (await user.matchPassword(password))) {
@@ -33,8 +33,8 @@ checkLogin = async (req, res) => {
 
 signUpUser = async (req, res, next) => {
   const { name, email, password } = req.body;
-  console.log(req.body)
   const userExists = await User.findOne({ email });
+  console.log(userExists);
   if (userExists) {
     const error = new Error("User already exists");
     res.status(409);
@@ -42,6 +42,7 @@ signUpUser = async (req, res, next) => {
   }
 
   const user = await User.create({ name, email, password });
+  console.log(user);
 
   if (user) {
     res.status(201).json({

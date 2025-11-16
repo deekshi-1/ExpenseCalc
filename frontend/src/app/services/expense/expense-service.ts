@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +22,6 @@ export class ExpenseService {
   }
 
   addExpense(data: any) {
-    console.log(data);
     return this.http.post<any>(this.api + 'expense/addExpense', data, {
       withCredentials: true,
       observe: 'response',
@@ -73,4 +73,5 @@ export class ExpenseService {
       observe: 'response',
     });
   }
+
 }

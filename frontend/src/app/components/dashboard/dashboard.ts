@@ -1,4 +1,4 @@
-import { Component, signal, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, signal, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { ExpenseList } from '../expense-list/expense-list';
@@ -18,7 +18,7 @@ import { Graph } from '../graph/graph';
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
-export class Dashboard {
+export class Dashboard implements AfterViewInit {
   dashboardDetails = signal<any>({});
 
 
@@ -53,8 +53,36 @@ export class Dashboard {
   constructor(private router: Router, private expenseService: ExpenseService, private dialog: MatDialog,) {
     this.getDashboard();
   }
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.scrollToTop();
+    }, 0);
+  }
 
-
+  private scrollToTop() {
+    // Try scrolling the window first
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Also try scrolling any parent containers that might be scrollable
+    const scrollContainers = [
+      document.querySelector('.main'),
+      document.querySelector('mat-sidenav-content'),
+      document.documentElement,
+      document.body
+    ];
+    
+    scrollContainers.forEach(container => {
+      if (container && container instanceof Element) {
+        try {
+          container.scrollTo({ top: 0, behavior: 'smooth' });
+        } catch (e) {
+          // Fallback for browsers that don't support scrollTo on all elements
+          if (container instanceof HTMLElement) {
+            container.scrollTop = 0;
+          }
+        }
+      }
+    });
+  }
 
   async getDashboard() {
     try {

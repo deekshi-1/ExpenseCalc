@@ -29,20 +29,19 @@
         <div>
           <mat-form-field appearance="outline">
             <mat-label>Password</mat-label>
-            <input type="password" matInput formControlName="password" /> @if
+            <input type="password" matInput formControlName="password" autocomplete="current-password" /> @if
             (signUpForm.controls['password'].hasError('required') &&
             signUpForm.controls['password'].touched) {
             <mat-error>Field Required</mat-error>
             } @else if (signUpForm.controls['password'].hasError('minlength') &&
             signUpForm.controls['password'].touched) {
             <mat-error>Must be at lest 6 characters</mat-error>
-            }</mat-form-field
-          >
+            }</mat-form-field>
         </div>
         <div>
           <mat-form-field appearance="outline">
             <mat-label>Confirm Password</mat-label>
-            <input type="password" matInput formControlName="confirmPassword" />
+            <input type="password" matInput formControlName="confirmPassword" autocomplete="current-password" />
             @if(signUpForm.get('confirmPassword')?.hasError('required') &&
             signUpForm.get('confirmPassword')?.touched){
             <mat-error class="error">Password Required</mat-error>
@@ -50,7 +49,7 @@
             signUpForm.get('confirmPassword')?.dirty){
             <mat-error class="error">Password Mismatch</mat-error>}
           </mat-form-field>
-        </div>  
+        </div>
         @if (err) {
         <mat-error class="text-center mb-3">All fields are required</mat-error>
         }

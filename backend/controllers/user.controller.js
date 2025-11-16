@@ -24,7 +24,7 @@ getUserDetails = async (req, res, next) => {
 
 updateUserDetails = async (req, res, next) => {
   const { name } = req.body;
-  console.log(name);
+  
 
   if (!req.user) {
     res.status(404);

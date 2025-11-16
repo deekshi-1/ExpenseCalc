@@ -15,7 +15,7 @@ mat-sidenav {
 mat-toolbar {
   position: sticky;
   top: 0;
-  z-index: 2;
+  z-index:5;
   background-color: #2A4D3E;
   color: white;
   

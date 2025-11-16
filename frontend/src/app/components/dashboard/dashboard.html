@@ -4,13 +4,17 @@
       <mat-icon>calendar_month</mat-icon>
       <p class="data"></p>
       <p>First Expense Date</p>
-      <span>{{ dashboardDetails().firstExpense?.createdAt|date:'short'}}</span>
+      @if (dashboardDetails().firstExpense) {<span>{{
+        dashboardDetails().firstExpense?.createdAt|date:'short'}}</span>}@else {<span>NA</span>}
+
     </div>
     <div class="box">
       <mat-icon>calendar_month</mat-icon>
       <p class="data"></p>
       <p>Latest Expense Date</p>
-      <span>{{ dashboardDetails().lastExpense?.createdAt|date:'short'}}</span>
+      @if (dashboardDetails().firstExpense) {<span>{{
+        dashboardDetails().lastExpense?.createdAt|date:'short'}}</span>}@else {<span>NA</span>}
+
     </div>
     <div class="box">
       <mat-icon>scoreboard</mat-icon>
@@ -41,7 +45,7 @@
       <mat-card-header>
         <mat-card-title-group>
           <mat-card-title>Yearly Monthly Expense</mat-card-title>
-          <mat-card-subtitle class="my-3" ><span (click)="openDialog()">Click to view by year</span> </mat-card-subtitle>
+          <mat-card-subtitle class="my-3"><span (click)="openDialog()">Click to view by year</span> </mat-card-subtitle>
         </mat-card-title-group>
       </mat-card-header>
       <mat-card-content>

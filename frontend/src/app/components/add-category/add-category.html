@@ -9,7 +9,7 @@
   <div class="catogoryList row gap-3 justify-content-center">
     @for (item of category(); track item._id) {
     <mat-card appearance="outlined" color="primary" class="chips"
-      ><span class="d-flex align-items-center p-2"
+      ><span class="d-flex align-items-center p-2 text-capitalize"
         >{{ item.name }} <mat-icon class="mx-2" (click)="deleteItem(item._id)">delete</mat-icon></span
       ></mat-card
     >}

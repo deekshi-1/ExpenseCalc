@@ -53,8 +53,8 @@
           <div class="form-div">
             <mat-form-field appearance="outline">
               <mat-label>Expense Category</mat-label>
-              <mat-select formControlName="expenseCategory">
-                @for (item of category(); track item._id) {<mat-option value="{{ item.name }}">{{
+              <mat-select formControlName="expenseCategory" class="text-capitalize">
+                @for (item of category(); track item._id) {<mat-option class="text-capitalize" value="{{ item.name }}">{{
                   item.name
                   }}</mat-option>}
               </mat-select>
@@ -70,7 +70,7 @@
               <mat-label>Expense Payment Type</mat-label>
               <mat-select formControlName="paymentType">
                 <mat-option value="cash" selected>Cash</mat-option>
-                <mat-option value="upi">Upi</mat-option>
+                <mat-option value="upi">UPI</mat-option>
                 <mat-option value="card">Card</mat-option>
               </mat-select>
               @if (expenseForm.controls['paymentType'].hasError('required') &&
@@ -108,4 +108,7 @@
       </form>
     </mat-card-content>
   </mat-card>
+  <div class="csv my-4">
+    <app-import-csv></app-import-csv>
+  </div>
 </div>

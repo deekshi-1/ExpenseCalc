@@ -37,7 +37,7 @@ export class Signup {
         };
 
         let response = await firstValueFrom(this.userService.signup(data));
-        console.log(response.status);
+        console.log(response);
         if (response.status == 201) {
           alert('User created ');
           this.router.navigateByUrl('/login');

@@ -48,7 +48,7 @@ export class AddCategory {
     try {
       if (this.newCategory !== '' && !this.err()) {
         let response = await firstValueFrom(
-          this.catagoryService.addCategory({ name: this.newCategory })
+          this.catagoryService.addCategory({ name: this.newCategory.toLowerCase() })
         );
         if (response.status === 201) {
           this.category.set(response.body);
