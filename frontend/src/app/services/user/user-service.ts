@@ -32,4 +32,8 @@ export class UserService {
     return this.http.get<any>(this.api + 'user/logout', { withCredentials: true, observe: 'response' })
   }
 
+  checkLogin() {
+    return this.http.get<any>(this.api + 'user/checkLogin', { withCredentials: true, observe: 'response' })
+  }
+
 }

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Routes } from '@angular/router';
+import { authGuard } from './gaurd/auth-gaurd-guard';
 
 export const routes: Routes = [{
     path: '',
@@ -9,6 +10,7 @@ export const routes: Routes = [{
 {
     path: 'ExpenseCalc',
     loadComponent: () => import('./components/home-page/home-page').then((m) => m.HomePage),
+    canActivate: [authGuard],
     children: [{
         path: '',
         loadComponent: () => import('./components/dashboard/dashboard').then((m) => m.Dashboard),

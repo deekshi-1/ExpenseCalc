@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
+const { checkLogin } = require("./auth.controller");
 
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -59,9 +60,19 @@ logoutUser = async (req, res) => {
   res.status(200).json({ message: "Logged out successfully" });
 };
 
+checkLogin = async (req, res, next) => {
+  if (req.user) {
+    res.status(200).json({ message: "Authorised" })
+  } else {
+    const error = new Error("no user");
+    res.status(400);
+    return next(error);
+  }
+};
 
 module.exports = {
   getUserDetails,
   updateUserDetails,
-  logoutUser
+  logoutUser,
+  checkLogin
 };
