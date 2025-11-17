@@ -10,5 +10,5 @@ router.get("/", (req, res) => {
 
 router.route("/getData").get(auth, userController.getUserDetails);
 router.route("/upDate").patch(auth, userController.updateUserDetails);
-
+router.route("/logout").get(auth,userController.logoutUser);
 module.exports = router;

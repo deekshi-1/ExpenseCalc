@@ -7,6 +7,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatDialog } from '@angular/material/dialog';
 import { Profile } from '../profile/profile';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { UserService } from '../../services/user/user-service';
+import { firstValueFrom } from 'rxjs';
 
 
 @Component({
@@ -16,7 +18,7 @@ import { Router, RouterLink, RouterOutlet } from '@angular/router';
   styleUrl: './nav-bar.css'
 })
 export class NavBar {
-  constructor(private dialog: MatDialog, private router: Router) { }
+  constructor(private dialog: MatDialog, private router: Router, private userService: UserService) { }
 
   isMenuOpen = signal(false);
 
@@ -33,5 +35,14 @@ export class NavBar {
   gotoAddExpense() {
     this.toggleMenu()
     this.router.navigate(['/ExpenseCalc/add-expense']);
+  }
+
+  async logout() {
+    const resp = await firstValueFrom(this.userService.logout());
+    console.log(resp);
+
+    if (resp.status == 200) {
+      this.router.navigate(['/login'])
+    }
   }
 }

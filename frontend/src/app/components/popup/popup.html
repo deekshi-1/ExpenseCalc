@@ -1,1 +1,18 @@
-<p>popup works!</p>
+<div class="p-4">
+  @if (data.popup ==='') { <h3 mat-dialog-title class="text-center mb-4">{{ data.title }}</h3>
+  <div mat-dialog-content class="my-2">
+    <p [class.success]="data.detail.status" class="description">{{ data.detail.description }}</p>
+  </div>
+  @if (data.detail.status) {
+  <p style="color: green;">{{ data.detail.success }}</p>
+  <p style="color: rgb(223, 11, 11);">{{ data.detail.failed }}</p>
+  }}@else {
+  <p>{{data.popup}}</p>
+  }
+  @if (data.errors?.length > 0) {
+  @for (item of data.errors; track $index) {<p class="errors text-center" style="color: red;">{{item}}</p>}
+  }
+  <div mat-dialog-actions align="center" class="mt-5">
+    <button matButton="filled" (click)="onNoClick()" cdkFocusInitial>CLOSE</button>
+  </div>
+</div>

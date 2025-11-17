@@ -28,4 +28,8 @@ export class UserService {
     return this.http.patch<any>(this.api + 'user/upDate', data, { withCredentials: true, observe: 'response' })
   }
 
+  logout() {
+    return this.http.get<any>(this.api + 'user/logout', { withCredentials: true, observe: 'response' })
+  }
+
 }

@@ -10,7 +10,7 @@ const generateToken = (id) => {
 
 checkLogin = async (req, res, next) => {
   const { email, password } = req.body;
-  
+
   const user = await User.findOne({ email });
 
   if (user && (await user.matchPassword(password))) {
@@ -56,6 +56,8 @@ signUpUser = async (req, res, next) => {
     return next(error)
   }
 };
+
+
 
 module.exports = {
   checkLogin,

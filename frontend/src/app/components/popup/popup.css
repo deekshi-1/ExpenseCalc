@@ -1,0 +1,12 @@
+.success{
+    color: green;
+}
+
+.description{
+    font-weight: 800;
+    font-size: 21px;
+}
+
+button{
+    background-color: red;
+}

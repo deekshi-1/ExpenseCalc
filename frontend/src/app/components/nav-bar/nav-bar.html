@@ -15,7 +15,7 @@
         </button>
         <span [routerLink]="'/'" class="main-logo">My App</span>
       </div>
-      <div class="right">logout</div>
+      <div class="right"><mat-icon (click)="logout()" >logout</mat-icon></div>
     </mat-toolbar>
     <div class="main"><router-outlet /></div>
 

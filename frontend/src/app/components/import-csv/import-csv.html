@@ -2,7 +2,8 @@
     <mat-card-header>
         <mat-card-title-group>
             <mat-card-title>Import CSV Expenses </mat-card-title>
-            <mat-card-subtitle class="d-flex gap-1 my-2">Download <a class="download-link" (click)="downloadSampleFile()"> sample</a>
+            <mat-card-subtitle class="d-flex gap-1 my-2">Download <a class="download-link"
+                    (click)="downloadSampleFile()"> sample</a>
                 file<mat-icon>download</mat-icon>
             </mat-card-subtitle>
         </mat-card-title-group>
@@ -49,6 +50,8 @@
 
             </table>
         </div>
-        <button matButton="filled" class="my-4" color="warn" style="background-color: rgb(33, 118, 236);" (click)="uploadCSV()">Upload File
-        </button>
+        <div class="button" align="center"><button matButton="filled" class="my-4" color="warn"
+                style="background-color: rgb(33, 118, 236);" (click)="uploadCSV()">Upload File
+            </button></div>
+
     </mat-card-content></mat-card>
