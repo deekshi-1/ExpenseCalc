@@ -6,6 +6,7 @@ import { ExpenseService } from '../../services/expense/expense-service';
 import { firstValueFrom } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { Popup } from '../popup/popup';
+import { LoadingService } from '../../services/loading/loading-service';
 
 @Component({
   selector: 'app-import-csv',
@@ -17,11 +18,12 @@ export class ImportCsv {
   currentStep = signal<1 | 2 | 3>(1);
 
   constructor(
-    private expenseService: ExpenseService, private dialog: MatDialog,
+    private expenseService: ExpenseService, private dialog: MatDialog,private loadingService: LoadingService
   ) { }
 
   async uploadCSV() {
     try {
+      this.loadingService.show()
       // Create file input element
       const input = document.createElement('input');
       input.type = 'file';
@@ -136,6 +138,8 @@ export class ImportCsv {
           this.showInfoDialog('Error',
             {}, ['Error processing CSV file. Please check the format and try again.'], '')
           this.currentStep.set(1);
+        }finally{
+          this.loadingService.hide()
         }
       };
       input.click();

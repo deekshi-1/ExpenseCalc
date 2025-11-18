@@ -216,7 +216,6 @@ export class AddExpense implements AfterViewInit {
           }
         } catch (error) {
           console.error('Error during registration:', error);
-          alert('Something went wrong during registration');
         }
       } else {
         this.err = true;
@@ -233,7 +232,6 @@ export class AddExpense implements AfterViewInit {
       }
     } catch (error) {
       console.error('Error deleting expense:', error);
-      alert('Something went wrong during delete');
     }
   }
 

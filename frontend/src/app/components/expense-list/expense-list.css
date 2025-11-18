@@ -19,3 +19,11 @@ mat-icon {
 .datas{
   cursor: pointer;
 }
+
+.center{
+  justify-content: center;
+  align-items: center;
+  padding: 60px 0;
+  font-size: 28px;
+  font-weight: 600;
+}

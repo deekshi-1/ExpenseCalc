@@ -7,6 +7,7 @@ import { firstValueFrom } from 'rxjs';
 import { CategoryService } from '../../services/category/category-service';
 import { MatCardModule } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
+import { LoadingService } from '../../services/loading/loading-service';
 
 @Component({
   selector: 'app-add-category',
@@ -28,7 +29,7 @@ export class AddCategory {
 
   category = signal<Category[]>([]);
 
-  constructor(private catagoryService: CategoryService) {
+  constructor(private catagoryService: CategoryService, private loadingService: LoadingService) {
     this.getCategory();
   }
 
@@ -40,11 +41,14 @@ export class AddCategory {
   }
 
   async getCategory() {
+    this.loadingService.show()
     let response = await firstValueFrom(this.catagoryService.getCategory());
+    this.loadingService.hide()
     this.category.set(response.body ?? []);
   }
 
   async addCategory() {
+    this.loadingService.show()
     try {
       if (this.newCategory !== '' && !this.err()) {
         let response = await firstValueFrom(
@@ -57,10 +61,13 @@ export class AddCategory {
       }
     } catch (error) {
       console.log((error as any).error);
+    } finally {
+      this.loadingService.hide()
     }
   }
 
   async deleteItem(id: number) {
+    this.loadingService.show()
     try {
       let response = await firstValueFrom(await this.catagoryService.removeId(id));
       if (response.status === 200) {
@@ -68,6 +75,8 @@ export class AddCategory {
       }
     } catch (error) {
       console.log((error as any).error);
+    } finally {
+      this.loadingService.hide()
     }
   }
 }

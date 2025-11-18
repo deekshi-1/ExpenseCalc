@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { UserService } from '../../services/user/user-service';
 import { firstValueFrom } from 'rxjs';
 import { DatePipe } from '@angular/common';
+import { LoadingService } from '../../services/loading/loading-service';
 
 @Component({
   selector: 'app-profile',
@@ -24,17 +25,16 @@ export class Profile {
     this.isEditing = !this.isEditing;
   }
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private loadingService: LoadingService) {
     this.getData();
   }
 
   getData = async () => {
+    this.loadingService.show()
     let response = await firstValueFrom(this.userService.getData());
-    console.log(response);
+    this.loadingService.hide()
     this.userName.set(response.body.name);
     this.user.set(response.body);
-    console.log(this.user());
-
     if (response.status == 200 && response.body) {
       this.userName.set(response.body.name);
       this.name.set(response.body.name);
@@ -46,6 +46,7 @@ export class Profile {
     if (this.userName().trim() === this.name().trim()) {
       alert('No change');
     } else {
+      this.loadingService.show()
       try {
         let response = await firstValueFrom(
           this.userService.updateUser({
@@ -53,12 +54,14 @@ export class Profile {
           })
         );
         if (response.status === 200) {
-          alert('Success');
+          alert('User name updated');
           this.getData();
           this.isEditing = false;
         }
       } catch (error) {
         alert('failed');
+      } finally {
+        this.loadingService.hide()
       }
     }
   }

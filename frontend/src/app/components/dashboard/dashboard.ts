@@ -11,6 +11,8 @@ import { Chart as ChartJS, ChartConfiguration, ChartData, ChartType, registerabl
 import { BaseChartDirective } from 'ng2-charts';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { Graph } from '../graph/graph';
+import { Loader } from '../loader/loader';
+import { LoadingService } from '../../services/loading/loading-service';
 
 @Component({
   selector: 'app-dashboard',
@@ -20,7 +22,6 @@ import { Graph } from '../graph/graph';
 })
 export class Dashboard implements AfterViewInit {
   dashboardDetails = signal<any>({});
-
 
   @ViewChild(BaseChartDirective) chart: BaseChartDirective<'bar'> | undefined;
 
@@ -50,7 +51,7 @@ export class Dashboard implements AfterViewInit {
   };
 
 
-  constructor(private router: Router, private expenseService: ExpenseService, private dialog: MatDialog,) {
+  constructor(private router: Router, private expenseService: ExpenseService, private dialog: MatDialog,private loadingService: LoadingService) {
     this.getDashboard();
   }
   ngAfterViewInit() {
@@ -69,7 +70,7 @@ export class Dashboard implements AfterViewInit {
       document.documentElement,
       document.body
     ];
-    
+
     scrollContainers.forEach(container => {
       if (container && container instanceof Element) {
         try {
@@ -85,15 +86,17 @@ export class Dashboard implements AfterViewInit {
   }
 
   async getDashboard() {
+    this.loadingService.show()
     try {
       const [dashboardResp, analyticsResp] = await Promise.all([
         firstValueFrom(this.expenseService.getDashboard()),
         firstValueFrom(this.expenseService.getMonthlyAnalytics(2025))
       ]);
-
+      this.loadingService.hide()
       this.dashboardDetails.set(dashboardResp.body);
       this.updateMonthlyChart(analyticsResp.body.monthlyTotals);
     } catch (err) {
+      this.loadingService.hide()
       console.error('Error fetching dashboard data', err);
     }
   }

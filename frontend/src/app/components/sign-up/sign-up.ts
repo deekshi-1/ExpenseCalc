@@ -7,6 +7,7 @@ import { MatCardModule } from '@angular/material/card'
 import { Router, RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { UserService } from '../../services/user/user-service';
+import { LoadingService } from '../../services/loading/loading-service';
 @Component({
   selector: 'app-signup',
   imports: [ReactiveFormsModule, MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule, RouterLink],
@@ -24,11 +25,12 @@ export class Signup {
     confirmPassword: new FormControl('', Validators.required),
   }, { validators: this.checkPassword() });
 
-  constructor(private router: Router, private userService: UserService) { }
+  constructor(private router: Router, private userService: UserService, private loadingService: LoadingService) { }
 
   async submit() {
     this.err = false;
     if (this.signUpForm.valid) {
+      this.loadingService.show()
       try {
         const data = {
           name: this.signUpForm.get('name')?.value,
@@ -44,12 +46,17 @@ export class Signup {
         }
 
       } catch (error: unknown) {
+
         console.log((error as any).error);
         alert((error as any).error.message || 'Unknown error');
         if ((error as any).status == 409) {
           this.router.navigateByUrl('/login');
         }
+
+      } finally {
+        this.loadingService.hide()
       }
+
     } else {
       this.err = true;
     }
