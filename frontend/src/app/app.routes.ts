@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Routes } from '@angular/router';
 import { authGuard } from './gaurd/auth-gaurd-guard';
+import { loggedGaurdGuard } from './gaurd/logged-gaurd-guard';
 
 export const routes: Routes = [{
     path: '',
@@ -17,7 +18,20 @@ export const routes: Routes = [{
     }, {
         path: 'add-expense',
         loadComponent: () => import('./components/add-expense/add-expense').then((m) => m.AddExpense),
-    }]
+    },]
 },
-{ path: 'login', loadComponent: () => import('./components/login/login').then((m) => m.Login) },
-{ path: 'signup', loadComponent: () => import('./components/sign-up/sign-up').then((m) => m.Signup) }];
+{ 
+    path: 'login',
+    loadComponent: () => import('./components/login/login').then((m) => m.Login),
+    canActivate: [loggedGaurdGuard]
+  },
+  { 
+    path: 'signup',
+    loadComponent: () => import('./components/sign-up/sign-up').then((m) => m.Signup),
+    canActivate: [loggedGaurdGuard]
+  },
+  { 
+    path: '**',
+    redirectTo: 'login'
+  }
+];

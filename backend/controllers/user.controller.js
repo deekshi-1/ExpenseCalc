@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
-const { checkLogin } = require("./auth.controller");
 
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -74,5 +73,5 @@ module.exports = {
   getUserDetails,
   updateUserDetails,
   logoutUser,
-  checkLogin
+  checkLogin,
 };
