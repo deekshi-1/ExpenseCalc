@@ -9,6 +9,7 @@ const errHandler = require("./middleware/errorMiddleware");
 dotenv.config();
 
 const app = express();
+app.set("trust proxy", 1);
 
 app.use(
   cors({

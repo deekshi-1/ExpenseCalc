@@ -16,8 +16,9 @@ checkLogin = async (req, res, next) => {
   if (user && (await user.matchPassword(password))) {
     res.cookie("token", generateToken(user._id), {
       httpOnly: true,
+      secure: true,
       maxAge: 10 * 24 * 60 * 60 * 1000,
-      sameSite: "strict",
+      sameSite: "none",
     });
     res.status(200).json({
       _id: user._id,

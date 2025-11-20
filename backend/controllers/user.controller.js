@@ -53,8 +53,9 @@ updateUserDetails = async (req, res, next) => {
 logoutUser = async (req, res) => {
   res.cookie("token", "", {
     httpOnly: true,
+    secure: true,
     expires: new Date(0),
-    sameSite: "strict",
+    sameSite: "none",
   });
   res.status(200).json({ message: "Logged out successfully" });
 };
