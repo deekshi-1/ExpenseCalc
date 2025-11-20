@@ -12,7 +12,10 @@ const app = express();
 
 app.use(
   cors({
-    origin: "http://localhost:4200",
+    origin: [
+      "http://localhost:4200",
+      "https://expensecalc-8kro.onrender.com"
+    ],
     credentials: true,
   })
 );
